@@ -41,15 +41,15 @@
                   <div class="col-md-4">
                       <h2>JWT Decoded Output</h2>
                       <div id="jwt_decoded_output">
-                          <div id="message"></div>
+                          <div id="token_message"></div>
                           <h4>Header</h4>
-                          <div id="header" class="token"></div>
+                          <div id="token_header" class="token"></div>
                           <br />
                           <h4>Payload</h4>
-                          <div id="payload" class="token"></div>
+                          <div id="token_payload" class="token"></div>
                           <br />
                           <h4>Signature</h4>
-                          <div id="signature" class="token"></div>
+                          <div id="token_signature" class="token"></div>
                       </div>
                   </div>
                   <div class="col-md-4">
@@ -60,9 +60,10 @@
                       <h2>Sign Token with Ethereum Address</h2>
                       <h4>Etherum Address:</h4>
                       <p id="eth_address">Make sure you have Metamask installed!</p>
-                      <h4>Signed Message:</h4>
-                      <p id="signed_message" class="token"></p>
-                      <p><a class="btn btn-secondary" role="button" id="sign_message_button">Sign Message &raquo;</a></p>
+                      <h4>Signature:</h4>
+                      <p id="eth_signature" class="token"></p>
+                      <p><a class="btn btn-info" role="button" id="sign_message_button">Sign Message &raquo;</a></p>
+                      <p><a class="btn btn-success" role="button" id="sign_message_button" href="https://etherscan.io/verifySig" target="_blank">Verify Message &raquo;</a></p>
                   </div>
               </div>
               <hr>

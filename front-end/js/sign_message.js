@@ -30,7 +30,7 @@ async function sign_message(message) {
 async function sign_token() {
     var jwt_raw = document.getElementById("jwt_raw").innerText
     var signed_message = await sign_message(jwt_raw)
-    document.getElementById("signed_message").innerText = signed_message
+    document.getElementById("eth_signature").innerText = signed_message
 }
 
 function add_address() {

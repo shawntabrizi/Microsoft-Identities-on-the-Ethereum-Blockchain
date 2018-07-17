@@ -51,11 +51,10 @@ function jwtdecode(jwt_token) {
 
 }
 
-var div_header = document.getElementById('header')
-var div_payload = document.getElementById('payload')
-var div_signature = document.getElementById('signature')
-var p_message = document.getElementById('message')
-var input_field = document.getElementById('input')
+var div_header = document.getElementById('token_header')
+var div_payload = document.getElementById('token_payload')
+var div_signature = document.getElementById('token_signature')
+var p_message = document.getElementById('token_message')
 
 
 // Detect Querystrings
