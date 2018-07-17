@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="">
 
-    <title>Jumbotron Template for Bootstrap</title>
+    <title>MSID on ETH - TEST</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
@@ -21,7 +21,7 @@
           <div class="collapse navbar-collapse" id="navbarsExampleDefault">
               <ul class="navbar-nav mr-auto">
                   <li class="nav-item active">
-                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="#">MSID on ETH - TEST <span class="sr-only">(current)</span></a>
                   </li>
               </ul>
           </div>
@@ -58,8 +58,11 @@
                   </div>
                   <div class="col-md-4">
                       <h2>Sign Token with Ethereum Address</h2>
-                      <p>Make sure you have Metamask installed!</p>
-                      <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                      <h4>Etherum Address:</h4>
+                      <p id="eth_address">Make sure you have Metamask installed!</p>
+                      <h4>Signed Message:</h4>
+                      <p id="signed_message" class="token"></p>
+                      <p><a class="btn btn-secondary" role="button" id="sign_message_button">Sign Message &raquo;</a></p>
                   </div>
               </div>
               <hr>
@@ -76,8 +79,10 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 
       <!-- Custom JS-->
-      <script src="js/msal.min.js"></script>
+      <script src="js/lib/msal.min.js"></script>
+      <script src="js/lib/web3.min.js"></script>
       <script src="js/sign_in.js"></script>
       <script src="js/jwt_decoder.js"></script>
+      <script src="js/sign_message.js"></script>
   </body>
 </html>
