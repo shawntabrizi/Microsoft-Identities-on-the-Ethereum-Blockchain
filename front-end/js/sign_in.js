@@ -9,7 +9,7 @@ function sign_in() {
 
     })
 
-    userAgentApplication.loginPopup(["user.read"]).then(function (token) {
+    userAgentApplication.loginRedirect(["user.read"]).then(function (token) {
         var user = userAgentApplication.getUser();
         if (user) {
             console.log("signed in sucessfully");

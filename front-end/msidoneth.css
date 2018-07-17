@@ -5,5 +5,5 @@ body {
 
 .token {
     font-family: monospace;
-    word-break: break-word;
+    word-wrap: break-word;
 }
