@@ -16,7 +16,7 @@ def deploy_contract():
     }
 
     #load solditiy code
-    with open('../identity-smart-contract/IdentityStore_Sample.sol') as file:
+    with open('../../identity-smart-contract/IdentityStore_Sample.sol') as file:
         source_code = file.readlines()
 
     #compile contract
