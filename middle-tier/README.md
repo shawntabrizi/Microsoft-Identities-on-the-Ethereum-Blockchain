@@ -4,6 +4,7 @@ This is the middle tier for Microsoft Identities on the blockchain. Built as a d
 
 
 [Install docker for mac](https://docs.docker.com/docker-for-mac/install/)
+
 [Install docker for windows](https://docs.docker.com/docker-for-windows/install/)
 
 To start the app in a container run:
