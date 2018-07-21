@@ -1,6 +1,4 @@
 """
-This script runs the application using a development server.
-It contains the definition of routes and views for the application.
 """
 
 import sys
@@ -29,6 +27,10 @@ jwk_uri = res.json()['jwks_uri']
 res = requests.get(jwk_uri)
 jwk_keys = res.json()
 publicKeyMap = {}
+
+@app.route("/")
+def index():
+    return "Welcome to MSFT identities on the Ethereum Blockchain"
 
 @app.before_request
 def before_request():
@@ -82,37 +84,40 @@ def before_request():
             return resp
 
         print (decoded_token)
-    return
 
-sampleResponse = [ 
-    {
-        'id' : '1',
-        'title': u'hello world'
-    }, 
-    {
-       'id' : '2',
-        'title': u'flossy glossy'
-    }
- ]
+
+todos = {
+    '1' : 'first_todo',
+    '2' : 'second_todo',
+    '3' : 'third_todo'
+}
+
 
 class Metadata(Resource):
+    
     def get(self):
         resp = app.make_response(jsonify(sampleResponse))
         resp.headers['Access-Control-Allow-Origin'] = '*'
         return resp
 
+
 class TodoSimple(Resource):
+    
     def get(self, todo_id):
-        return {todo_id: todos[todo_id]}
+        return {todo_id: todos.get(todo_id)}
 
     def put(self, todo_id):
         todos[todo_id] = request.form['data']
         return {todo_id: todos[todo_id]}
 
-api.add_resource(TodoSimple, '/<string:todo_id>')
-api.add_resource(Metadata, '/')
+    def delete(self, todo_id):
+        if todos[todo_id] is not None:
+            del todos[todo_id]
+            return {}
+        
 
-
+api.add_resource(TodoSimple, '/todo/<string:todo_id>')
+api.add_resource(Metadata, '/todo/')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
