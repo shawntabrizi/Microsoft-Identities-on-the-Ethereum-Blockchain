@@ -9,8 +9,8 @@ This is the middle tier for Microsoft Identities on the blockchain. Built as a d
 To start the app in a container run:
 
 ```
-    docker build -t msft .
-    docker run -d  -p 5000:5000 msft
+    docker build -t msidonethmiddle .
+    docker run -d  -p 5000:5000 msidonethmiddle
 ```
 
 If you want to stop the container run (will stop all running containers):
