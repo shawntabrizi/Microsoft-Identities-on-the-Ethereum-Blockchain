@@ -7,6 +7,7 @@ import sys
 import requests
 import jwt
 import cryptography
+
 from requests.auth import HTTPBasicAuth
 from flask import Flask, json, jsonify, request
 from flask_restful import Resource, Api
@@ -31,13 +32,17 @@ publicKeyMap = {}
 
 @app.before_request
 def before_request():
+    
     print ("before processing: url is: {0}".format(request.url))
+    
     if "Authorization" not in request.headers:
         resp = app.make_response(jsonify(authErrorNoToken))
         resp.status = "401"
         resp.content_type = "application/json"
         return resp
+    
     authHeader = request.headers['Authorization']
+    
     if authHeader.startswith('Bearer '):
         access_token = authHeader[7:]
         token_header = jwt.get_unverified_header(access_token)
