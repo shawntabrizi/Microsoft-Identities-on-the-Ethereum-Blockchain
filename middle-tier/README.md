@@ -11,8 +11,10 @@ To start the app in a container run:
 
 ```
     docker build -t msidonethmiddle .
-    docker run -d  -p 5000:5000 msidonethmiddle
+    docker run -d -p 5000:5000 msidonethmiddle
 ```
+
+Now the app is running in your computer. Head to your browser and go to http://localhost:5000 to see the app running.
 
 If you want to stop the container run (will stop all running containers):
 
