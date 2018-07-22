@@ -17,7 +17,7 @@ To start the app in a container run:
 If you want to use docker for development then you can specify the path where the development directory lives in your computer so that chaanges are reflected without rebuilding.
 
 ```
-    docker run -d -p 5000:5000 /PATH/TO/DEV/FOLDER/:/workdir -v msidonethmiddle
+    docker run -d -p 5000:5000 -v /PATH/TO/DEV/FOLDER/:/workdir msidonethmiddle
 ```
 
 Now the app is running in your computer. Head to your browser and go to http://localhost:5000 to see the app running.
