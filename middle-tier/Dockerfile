@@ -7,16 +7,17 @@ RUN apt-get update -y && \
     libpq-dev libjpeg-dev libxml2-dev libxslt-dev libfreetype6-dev libffi-dev
 
 ENV LISTEN_PORT=8000
+
 EXPOSE 5000
 
 COPY ./app/requirements.txt ./app/requirements.txt 
 
 RUN pip3 install -r app/requirements.txt
 
-COPY ./app ./app
+WORKDIR /workdir
 
-WORKDIR ./app
+COPY . /workdir
 
 ENTRYPOINT [ "python3" ]
 
-CMD [ "main.py" ]
+CMD [ "app/main.py" ]
