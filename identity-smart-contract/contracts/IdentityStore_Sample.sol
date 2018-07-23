@@ -46,6 +46,11 @@ contract IdentityStore is Ownable {
         tenantHashMapping[_newHash] = currentAddress;
     }
 
+    function isValid(
+        bytes32 _tenantHash, 
+        address _userAddress) view public returns(bool) {
+        return tenantHashMapping[_tenantHash] == _userAddress;
+    }
 
     function userAddressExists(address userAddress) view public returns(bool) {       
         if(tenantAddressMapping[userAddress].timestamp == 0) {
