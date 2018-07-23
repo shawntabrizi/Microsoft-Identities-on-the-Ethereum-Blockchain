@@ -92,7 +92,8 @@ contract IdentityStore is Ownable {
         bytes32 _newHash, 
         uint256 _timestamp) onlyOwner public {
 
-        require(userTenantHashExists(_oldHash));
+        require(userTenantHashExists(_oldHash), "Old hash does not exist.");
+        require(!userTenantHashExists(_newHash), "New hash is already registered.");
         address currentAddress = tenantHashMapping[_oldHash];
         User memory newUserInfo = User(_newHash, _timestamp);
 
