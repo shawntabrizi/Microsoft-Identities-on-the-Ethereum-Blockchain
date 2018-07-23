@@ -64,10 +64,12 @@ contract IdentityStore is Ownable {
         User memory existingUser = tenantAddressMapping[oldUserAddress];
         
         require(!userAddressExists(newUserAddress));
+        require(userAddressExists(oldUserAddress));
 
         tenantHashMapping[existingUser.tenantHash] = newUserAddress;
         tenantAddressMapping[newUserAddress] = existingUser;
         delete tenantAddressMapping[oldUserAddress];
     }
+
 
 }
