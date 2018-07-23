@@ -64,11 +64,24 @@ contract Ownable {
 }
 
 contract IdentityStore is Ownable {
-
-    mapping(address => string) public tenantMapping;
-    
-    function setTenant(address _user, string _tenant) public onlyOwner {
-        tenantMapping[_user] = _tenant;
+  
+    struct User {
+        string tenantId;
+        uint256 timestamp;
     }
+
+    mapping(address => User) public tenantMapping;
+
+    mapping(bytes32 => address) public tenantHashMapping; 
     
+    function setTenant(
+        bytes32 _tenantHash,
+        address _userAddress,
+        string _tenantId) onlyOwner public {
+        
+        User memory newUser = User(_tenantId, block.timestamp);
+
+        tenantMapping[_userAddress] = newUser;
+        tenantHashMapping[_tenantHash] = _userAddress;
+    }   
 }
