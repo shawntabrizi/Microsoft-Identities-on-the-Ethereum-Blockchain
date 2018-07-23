@@ -123,7 +123,8 @@ contract IdentityStore is Ownable {
 
     function updateAddress (address oldUserAddress, address newUserAddress) public {
         User memory existingUser = tenantAddressMapping[oldUserAddress];
-        //require(tenantAddressMapping[newUserAddress] != 0);
+        
+        require(!userAddressExists(newUserAddress));
 
         tenantHashMapping[existingUser.tenantHash] = newUserAddress;
         tenantAddressMapping[newUserAddress] = existingUser;
