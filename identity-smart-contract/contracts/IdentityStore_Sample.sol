@@ -1,6 +1,9 @@
 pragma solidity ^0.4.24;
 
-contract IdentityStore {
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+
+contract IdentityStore is Ownable {
+
     mapping(address => string) public tenantMapping;
     
     function setTenant(address _user, string _tenant) public {
@@ -8,7 +11,7 @@ contract IdentityStore {
     }
     
     function isAlive() public pure returns(bool alive) {
-        return true;
+        return false;
     }
     
 }
