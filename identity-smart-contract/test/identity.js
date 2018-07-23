@@ -25,7 +25,7 @@ contract('Identity', function(accounts) {
         return Identity.deployed().then(function(instance) {
         
             var tenantHash = web3.sha3('tenantId!');
-            var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+            var address1 = "0x47635c238f8af460e37e772387364ddd86c43a61";
             var address2 = "0x47635c238f8af460e37e772387364ddd86c43a62";
             var timestamp = 123123123
 
@@ -46,7 +46,7 @@ contract('Identity', function(accounts) {
         return Identity.deployed().then(function(instance) {
         
             var tenantHash = web3.sha3('tenantId!');
-            var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+            var address1 = "0x47635c238f8af460e37e772387364ddd86c43a61";
             var address2 = "0x47635c238f8af460e37e772387364ddd86c43a62";
             var timestamp = 123123123
 
