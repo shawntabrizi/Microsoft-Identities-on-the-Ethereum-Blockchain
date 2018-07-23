@@ -59,4 +59,14 @@ contract IdentityStore is Ownable {
         }
         return true;
     }
+
+    function updateAddress (address oldUserAddress, address newUserAddress) public {
+        User memory existingUser = tenantAddressMapping[oldUserAddress];
+        //require(tenantAddressMapping[newUserAddress] != 0);
+
+        tenantHashMapping[existingUser.tenantHash] = newUserAddress;
+        tenantAddressMapping[newUserAddress] = existingUser;
+        delete tenantAddressMapping[oldUserAddress];
+    }
+
 }
