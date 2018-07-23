@@ -41,4 +41,13 @@ contract IdentityStore is Ownable {
 
         return true;
     }
+
+    function updateAddress (address oldUserAddress, address newUserAddress) public {
+        User existingUser = tenantAddressMapping[oldUserAddress];
+        require(tenantAddressMapping[newUserAddress] == nil);
+
+        tenantHashMapping[existingUser.tenantHash] = newUserAddress;
+        tenantAddressMapping[newUserAddress] = existingUser;
+        tenantAddressMapping[oldUserAddress] = nil;
+    }
 }
