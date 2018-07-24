@@ -23,6 +23,7 @@ authErrorBadToken = { "code" : "Your token is not valid."}
 authErrorExpiredToken = { "code" : "Your token has expired."}
 authErrorNoBody = { "code" : "Missing payload."}
 invalidJsonInBody = { "code" : "Invalid JSON in body"}
+authErrorClaimNotSupport = { "code" : "The there's an unsupported claim in the list of claims to extract"}
 
 res = requests.get('https://login.microsoftonline.com/common/.well-known/openid-configuration')
 jwk_uri = res.json()['jwks_uri']
@@ -50,8 +51,14 @@ def before_request():
         resp.status = "401"
         resp.content_type = "application/json"
         return resp
+    registrationReq = json_string["registration"]
+    if not registrationReq or not registrationReq["token"]:
+        resp = app.make_response(jsonify(invalidJsonInBody))
+        resp.status = "401"
+        resp.content_type = "application/json"
+        return resp
 
-    access_token = json_string["registration"]["token"]
+    access_token = registrationReq["token"]
     print(access_token)
     
     if not access_token:
@@ -98,7 +105,25 @@ def before_request():
         resp.content_type = "application/json"
         return resp
 
+    claimSet = registrationReq["options"]["claims"]
+    # ignore the claimSet for now until we support more claim types
+    if not claimSet or len(claimSet) != 1 or claimSet[0] != "tid":
+        resp = app.make_response(jsonify(authErrorClaimNotSupport))
+        print("claims in the claims to extract list are not supported")
+        resp.status = "400"
+        resp.content_type = "application/json"
+        return resp
+    
+    tenantId = decoded_token["tid"]
+    userObjectId = decoded_token["oid"]
+    address = registrationReq["address"]
+    issuedAtTicks = decoded_token["iat"]
+
     print (decoded_token)
+    print(tenantId)
+    print(userObjectId)
+    print(address)
+    print(issuedAtTicks)
     resp = app.make_response("success")
     resp.status = "200"
     return resp
