@@ -7,15 +7,25 @@ contract CorpCoin is EIP20Interface {
     
     IdentityInterface idStore;
     uint256 expiration = 30 days;
+    uint numberOfCoins = 4;
     uint256 constant private MAX_UINT256 = 2**256 - 1;
     mapping (address => uint256) public balances;
     mapping (address => mapping (address => uint256)) public allowed;
-
+    mapping (address => bool) private coinAllocated;
 
     function CorpCoin(address addr, uint256 _initialAmount) public {
         idStore = IdentityInterface(addr);
         balances[msg.sender] = _initialAmount;
         totalSupply = _initialAmount;
+    }
+
+    function InitializeCoinToUser(address _to) public {
+        require(coinAllocated[_to] == false);
+        if( totalSupply - numberOfCoins >= 0) {
+            balances[_to] += numberOfCoins;
+            totalSupply -= numberOfCoins;
+            coinAllocated[_to] = true;
+        }
     }
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
