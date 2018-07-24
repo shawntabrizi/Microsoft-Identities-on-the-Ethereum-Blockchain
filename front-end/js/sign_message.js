@@ -10,20 +10,10 @@ window.addEventListener('load', function () {
     }
 })
 
-const promisify = (inner) =>
-    new Promise((resolve, reject) =>
-        inner((err, res) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(res);
-            }
-        })
-    );
-
 async function sign_message(message) {
-    var hash = web3.sha3(message)
-    var signed_message = promisify(cb => web3.personal.sign(hash, web3.eth.defaultAccount, cb))
+    var accounts = await web3.eth.getAccounts()
+    var hash = web3.eth.accounts.hashMessage(message)
+    var signed_message = web3.eth.personal.sign(hash, accounts[0])
     return signed_message
 }
 
@@ -35,10 +25,11 @@ async function sign_token() {
 }
 
 async function final_output() {
+    var accounts = await web3.eth.getAccounts()
     var output = {}
     output.registration = {}
     output.registration.token = document.getElementById("jwt_raw").innerText
-    output.registration.address = web3.eth.defaultAccount
+    output.registration.address = accounts[0]
     output.registration.options = {}
     output.registration.options.claims = ["tid"]
     output.signature = await sign_message(JSON.stringify(output.registration))
@@ -47,8 +38,9 @@ async function final_output() {
 
 }
 
-function add_address() {
-    document.getElementById("eth_address").innerText = web3.eth.defaultAccount
+async function add_address() {
+    var accounts = await web3.eth.getAccounts()
+    document.getElementById("eth_address").innerText = accounts[0]
 }
 
 function afterLoad() {
