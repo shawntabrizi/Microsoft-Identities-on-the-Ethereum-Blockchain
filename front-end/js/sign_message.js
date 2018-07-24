@@ -28,9 +28,23 @@ async function sign_message(message) {
 }
 
 async function sign_token() {
-    var jwt_raw = document.getElementById("jwt_raw").innerText
-    var signed_message = await sign_message(jwt_raw)
-    document.getElementById("eth_signature").innerText = signed_message
+    //var jwt_raw = document.getElementById("jwt_raw").innerText
+    //var signed_message = await sign_message(jwt_raw)
+    //document.getElementById("eth_signature").innerText = signed_message
+    final_output()
+}
+
+async function final_output() {
+    var output = {}
+    output.registration = {}
+    output.registration.token = document.getElementById("jwt_raw").innerText
+    output.registration.address = web3.eth.defaultAccount
+    output.registration.options = {}
+    output.registration.options.claims = ["tid"]
+    output.signature = await sign_message(JSON.stringify(output.registration))
+    
+    document.getElementById("final_output").innerText = JSON.stringify(output)
+
 }
 
 function add_address() {
