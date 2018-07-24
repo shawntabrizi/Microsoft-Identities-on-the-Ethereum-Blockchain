@@ -6,7 +6,7 @@ window.addEventListener('load', function () {
     } else {
         console.log('No Web3 Detected... please install Metamask')
         //You need Metamask to provide account info, so Infura won't do!
-        //window.web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/<APIKEY>"));
+        window.web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/<APIKEY>"));
     }
 })
 

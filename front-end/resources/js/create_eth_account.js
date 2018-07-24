@@ -24,7 +24,7 @@ function getRNG()
 	};
 }
 
-function get_eth_account()
+function get_private_key()
 {
 	var rng = getRNG();
 	rng.setSeed();
@@ -40,14 +40,19 @@ function get_eth_account()
 		pKey = '0' + pKey;
 	}
 	pKey = pKey.length > hex_digits ?  pKey.slice(0, hex_digits) : pKey;
-    console.log(pKey);
-	return {
-		privateKey: pKey
-	};
+	console.log(pKey);
+
+	return pKey;
+}
+
+function get_eth_account()
+{
+	return web3.eth.accounts.create();
 }
 
 function set_qr_account(account)
 {
+	console.log(account.privateKey);
 	jQuery('#qrcodeAccount').qrcode({
 		text	: account.privateKey
 	});	
