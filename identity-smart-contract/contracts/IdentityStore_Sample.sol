@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract IdentityStore is Ownable {
+contract IdentityStore is Ownable, IdentityStoreInterface {
 
     struct User {
         bytes32 tenantHash;
@@ -99,8 +99,8 @@ contract IdentityStore is Ownable {
     function updateAddress(address oldUserAddress, address newUserAddress) onlyOwner internal {
         User memory existingUser = tenantAddressMapping[oldUserAddress];
         
-        require(!userAddressExists(newUserAddress));
-        require(userAddressExists(oldUserAddress));
+        require(!userAddressExists(newUserAddress), "There's already an account tied to this address");
+        require(userAddressExists(oldUserAddress), "There's no account tied to the address origin");
 
         tenantHashMapping[existingUser.tenantHash] = newUserAddress;
         tenantAddressMapping[newUserAddress] = existingUser;
