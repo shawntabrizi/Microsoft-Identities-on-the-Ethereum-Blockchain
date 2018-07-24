@@ -1,7 +1,6 @@
 {
   "name": "identity-smart-contract",
   "version": "1.0.0",
-  "description": "",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
@@ -14,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "asyncawait": "^1.0.7",
-    "openzeppelin-solidity": "1.11.0"
-  }
+    "openzeppelin-solidity": "1.11.0",
+    "zeppelin-solidity": "^1.11.0"
+  },
+  "description": ""
 }

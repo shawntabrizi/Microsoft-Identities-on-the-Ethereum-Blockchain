@@ -1,8 +1,8 @@
 pragma solidity ^0.4.24;
 
-import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
+import "contracts/IdentityInterface.sol";
 
-contract IdentityStore is Ownable {
+contract IdentityStore is IdentityInterface {
   
     struct User {
         bytes32 tenantHash;
