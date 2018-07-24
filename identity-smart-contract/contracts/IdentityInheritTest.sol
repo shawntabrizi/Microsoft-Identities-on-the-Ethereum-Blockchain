@@ -1,7 +1,9 @@
 pragma solidity ^0.4.24;
 
 import "contracts/IdentityStore_Sample.sol";
+
 contract IdentityStoreInherit is IdentityStore {
+    
     function updateHashPublic(
         bytes32 _oldHash, 
         bytes32 _newHash, 
