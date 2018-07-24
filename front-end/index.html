@@ -1,96 +1,208 @@
-﻿<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
   <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="">
 
-    <title>MSID on ETH - TEST</title>
+    <title>MSID on ETH</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link href="resources/agency/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="resources/agency/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="msidoneth.css" rel="stylesheet">
+    <link href="resources/css/main.css" rel="stylesheet">
+    <link href="resources/agency/css/agency.css" rel="stylesheet">
+
+
   </head>
 
-  <body>
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-              <ul class="navbar-nav mr-auto">
-                  <li class="nav-item active">
-                      <a class="nav-link" href="#">MSID on ETH - TEST <span class="sr-only">(current)</span></a>
-                  </li>
-              </ul>
-          </div>
-      </nav>
-      <main role="main">
-          <!-- Main jumbotron for a primary marketing message or call to action -->
-          <div class="jumbotron">
-              <div class="container">
-                  <h1 class="display-3">Hello, <span id="name">there</span>.</h1>
-                  <p id="sign_in_text">Sign into your Microsoft Account.</p>
-                  <p><a class="btn btn-primary btn-lg" role="button" id="sign_in_button">Sign In &raquo;</a></p>
-                  <p><a class="btn btn-primary btn-lg" role="button" id="create_eth_account">Create Ethereum Account &raquo;</a></p>
-              </div>
-          </div>
-          <div class="container">
-              <!-- Example row of columns -->
-              <div class="row">
-                  <div class="col-md-4">
-                      <h2>JWT Decoded Output</h2>
-                      <div id="jwt_decoded_output">
-                          <div id="token_message"></div>
-                          <h4>Header</h4>
-                          <div id="token_header" class="token"></div>
-                          <br />
-                          <h4>Payload</h4>
-                          <div id="token_payload" class="token"></div>
-                          <br />
-                          <h4>Signature</h4>
-                          <div id="token_signature" class="token"></div>
-                      </div>
-                  </div>
-                  <div class="col-md-4">
-                      <h2>Raw JWT</h2>
-                      <p id="jwt_raw" class="token"></p>
-                  </div>
-                  <div class="col-md-4">
-                      <h2>Sign Token with Ethereum Address</h2>
-                      <h4>Etherum Address:</h4>
-                      <p id="eth_address">Make sure you have Metamask installed!</p>
-                      <h4>Signature:</h4>
-                      <p id="eth_signature" class="token"></p>
-                      <p><a class="btn btn-info" role="button" id="sign_message_button">Sign Message &raquo;</a></p>
-                      <p><a class="btn btn-success" role="button" id="sign_message_button" href="https://etherscan.io/verifySig" target="_blank">Verify Message &raquo;</a></p>
-                  </div>
-              </div>
-              <div class="row">
-                  <h2>Final Output</h2>
-                  <div class="col-md-12">
-                      <p id="final_output" class="token"></p>
-                  </div>
-              </div>
-              <hr>
-          </div> <!-- /container -->
-      </main>
-      <footer class="container">
-          <p>&copy; Microsoft Hackathon 2018</p>
-      </footer>
-      <!-- Bootstrap core JavaScript
-    ================================================== -->
-      <!-- Placed at the end of the document so the pages load faster -->
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  <body id="page-top">
 
-      <!-- Custom JS-->
-      <script src="js/lib/msal.min.js"></script>
-      <script src="js/lib/web3.min.js"></script>
-      <script src="js/sign_in.js"></script>
-      <script src="js/jwt_decoder.js"></script>
-      <script src="js/sign_message.js"></script>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top"><img class="msidoneth" src="resources/img/MSIDonETHSmall.png"/></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav text-uppercase ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#goal">Goal</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#getstarted">Get started</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead">
+      <div class="container">
+        <div class="intro-text">
+          <div class="intro-lead-in text-uppercase">Microsoft Identities on Ethereum Blockchain</div>
+          <div class="intro-heading">Easily access decentralized apps by leveraging your existing account</div>
+          <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="signup/index.html">Get started</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Goal -->
+    <section id="goal">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">Our Goal</h2>
+            <h3 class="section-subheading text-muted">
+              We believe that decentralized apps are the future.
+              We’re building the bridge from the current generation of centralized applications to the next generation of dApps on the Ethereum Blockchain
+            </h3>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-4">
+            <span class="fa-stack fa-4x">
+              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+              <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+            </span>
+            <h4 class="service-heading">Existing account</h4>
+            <p class="text-muted">
+                Use dApps with your existing account​. No need for new credentials.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <span class="fa-stack fa-4x">
+              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+              <i class="fa fa-building fa-stack-1x fa-inverse"></i>
+            </span>
+            <h4 class="service-heading">Strong ID verification</h4>
+            <p class="text-muted">
+              Easily prove you’re a member of an organization (company or school)​
+            </p>
+          </div>
+          <div class="col-md-4">
+            <span class="fa-stack fa-4x">
+              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+              <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+            </span>
+            <h4 class="service-heading">Privacy</h4>
+            <p class="text-muted">
+              Only share the information you’re comfortable with, or stay anonymous!​
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- About -->
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">About</h2>
+            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Get started -->
+    <section class="bg-light" id="getstarted">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">Get started</h2>
+            <p class="text-muted">To get started, sign into your corporate Microsoft account</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <p>
+              <a class="btn btn-primary btn-xl" role="button" href="signup/index.html">
+                  <img id="msLogo" src="resources/img/msLogo.png"/>
+                  Sign in with Microsoft
+              </a>
+            </p>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <span class="copyright">Copyright &copy; MSID on ETH 2018</span>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-inline social-buttons">
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fa fa-twitter"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fa fa-facebook"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fa fa-linkedin"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-inline quicklinks">
+              <li class="list-inline-item">
+                <a href="#">Privacy Policy</a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">Terms of Use</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="resources/agency/vendor/jquery/jquery.min.js"></script>
+    <script src="resources/agency/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="resources/agency/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="resources/agency/js/agency.min.js"></script>
+
   </body>
+
 </html>
