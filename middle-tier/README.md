@@ -10,8 +10,8 @@ This is the middle tier for Microsoft Identities on the blockchain. Built as a d
 To start the app in a container run:
 
 ```
-    docker build -t msidonethmiddle .
-    docker run -d -p 5000:5000 msidonethmiddle
+    docker build -t franzwolf/msidonethmiddle .
+    docker run -p 5000:5000 franzwolf/msidonethmiddle
 ```
 
 If you want to use docker for development then you can specify the path where the development directory lives in your computer so that chaanges are reflected without rebuilding.
