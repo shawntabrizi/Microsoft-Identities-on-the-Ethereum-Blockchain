@@ -148,9 +148,28 @@ contract IdentityStore is Ownable {
     }
 
     function isValid(
-        bytes32 _tenantHash, 
-        address _userAddress) view public returns(bool) {
-        return tenantHashMapping[_tenantHash] == _userAddress;
+        string _tenantId, 
+        address _userAddress,
+        uint256 _minTimestamp) view public returns(bool) {
+
+        // check valid address
+        if(!userAddressExists(_userAddress)) {
+            return false;
+        }
+
+        User memory currentUser = tenantAddressMapping[_userAddress];
+
+        // check valid tenant id
+        if(keccak256(currentUser.tenantId) != keccak256(_tenantId)) {
+            return false;
+        }
+        
+        // check minimum timestamp
+        if(currentUser.timestamp < _minTimestamp) {
+            return false;
+        }
+
+        return true;
     }
 
     function userAddressExists(address userAddress) view public returns(bool) {       
