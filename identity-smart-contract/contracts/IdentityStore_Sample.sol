@@ -111,42 +111,6 @@ contract IdentityStore is Ownable {
         }
     }
 
-    function updateHash(
-        bytes32 _oldHash, 
-        bytes32 _newHash, 
-        uint256 _timestamp) private {
-
-        require(userTenantHashExists(_oldHash), "Old hash does not exist.");
-        require(!userTenantHashExists(_newHash), "New hash is already registered.");
-        address currentAddress = tenantHashMapping[_oldHash];
-        User memory oldUserInfo = tenantAddressMapping[currentAddress];
-        User memory newUserInfo = User(_newHash, _timestamp, oldUserInfo.tenantId);
-
-        // update address mapping to user
-        tenantAddressMapping[currentAddress] = newUserInfo;
-
-        // delete old hash mapping to address
-        delete tenantHashMapping[_oldHash];
-
-        // add new hash mapping to address
-        tenantHashMapping[_newHash] = currentAddress;
-    }
-
-    function updateAddress(address oldUserAddress, address newUserAddress) onlyOwner private {
-        User memory existingUser = tenantAddressMapping[oldUserAddress];
-        
-        require(!userAddressExists(newUserAddress));
-        require(userAddressExists(oldUserAddress));
-
-        tenantHashMapping[existingUser.tenantHash] = newUserAddress;
-        tenantAddressMapping[newUserAddress] = existingUser;
-        delete tenantAddressMapping[oldUserAddress];
-    }
-
-    function updateTimestamp(bytes32 _tenantHash, uint256 _timestamp) onlyOwner private {
-        tenantAddressMapping[tenantHashMapping[_tenantHash]].timestamp = _timestamp;
-    }
-
     function isValid(
         string _tenantId, 
         address _userAddress,
@@ -172,24 +136,50 @@ contract IdentityStore is Ownable {
         return true;
     }
 
-    function userAddressExists(address userAddress) view public returns(bool) {       
+    function updateHash(
+        bytes32 _oldHash, 
+        bytes32 _newHash, 
+        uint256 _timestamp) internal {
+
+        require(userTenantHashExists(_oldHash), "Old hash does not exist.");
+        require(!userTenantHashExists(_newHash), "New hash is already registered.");
+        address currentAddress = tenantHashMapping[_oldHash];
+        User memory oldUserInfo = tenantAddressMapping[currentAddress];
+        User memory newUserInfo = User(_newHash, _timestamp, oldUserInfo.tenantId);
+
+        // update address mapping to user
+        tenantAddressMapping[currentAddress] = newUserInfo;
+
+        // delete old hash mapping to address
+        delete tenantHashMapping[_oldHash];
+
+        // add new hash mapping to address
+        tenantHashMapping[_newHash] = currentAddress;
+    }
+
+    function updateAddress(address oldUserAddress, address newUserAddress) onlyOwner internal {
+        User memory existingUser = tenantAddressMapping[oldUserAddress];
+        
+        require(!userAddressExists(newUserAddress));
+        require(userAddressExists(oldUserAddress));
+
+        tenantHashMapping[existingUser.tenantHash] = newUserAddress;
+        tenantAddressMapping[newUserAddress] = existingUser;
+        delete tenantAddressMapping[oldUserAddress];
+    }
+
+    function updateTimestamp(bytes32 _tenantHash, uint256 _timestamp) onlyOwner internal {
+        tenantAddressMapping[tenantHashMapping[_tenantHash]].timestamp = _timestamp;
+    }
+
+    function userAddressExists(address userAddress) view internal returns(bool) {       
         if(tenantAddressMapping[userAddress].timestamp == 0) {
             return false;
         }
         return true;
     }
 
-    function hasAccountExpired(address userAddress, uint validDays ) view public returns(bool) {
-        require(userAddressExists(userAddress));
-        uint256 userTimestamp = tenantAddressMapping[userAddress].timestamp;
-        if(now >=userTimestamp + (validDays * 1 days)) {
-            return false;
-        }
-        
-        return true;
-    }       
-
-    function userTenantHashExists(bytes32 tenantHash) view public returns(bool){
+    function userTenantHashExists(bytes32 tenantHash) view internal returns(bool){
         if(tenantHashMapping[tenantHash] == 0) {
             return false;
         }
