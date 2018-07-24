@@ -42,5 +42,9 @@ function sign_in() {
 }
 
 
-var sign_in_button = document.getElementById("sign_in_button")
+var sign_in_button = document.getElementById("sign_in_button");
 sign_in_button.addEventListener("click", sign_in);
+
+document.getElementById("create_eth_account").onclick = function () {
+    location.href = "./QRAccount.html";
+};
