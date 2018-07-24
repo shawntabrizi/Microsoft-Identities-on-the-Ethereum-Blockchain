@@ -46,6 +46,10 @@ contract IdentityStore is Ownable {
         tenantHashMapping[_newHash] = currentAddress;
     }
 
+    function updateTimestamp(bytes32 _tenantHash,uint256 _timestamp) onlyOwner public {
+        tenantAddressMapping[tenantHashMapping[_tenantHash]].timestamp = _timestamp;
+    }
+
     function isValid(
         bytes32 _tenantHash, 
         address _userAddress) view public returns(bool) {
@@ -58,6 +62,14 @@ contract IdentityStore is Ownable {
         }
         return true;
     }
+
+    function hasAccountExpired(address userAddress, uint256 timestamp ) view public returns(bool) {
+        require(userAddressExists(userAddress));
+        uint256 userTimestamp = tenantAddressMapping[userAddress].timestamp;
+        require(userTimestamp > 0);
+        
+        return false;
+    }       
 
     function userTenantHashExists(bytes32 tenantHash) view public returns(bool){
         if(tenantHashMapping[tenantHash] == 0) {
