@@ -1,0 +1,7 @@
+.tern-port
+.DS_Store
+node_modules/
+*.log
+/build
+.vs/
+.truffle-solidity-loader
