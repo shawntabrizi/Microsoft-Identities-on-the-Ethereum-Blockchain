@@ -7,6 +7,7 @@ contract IdentityStore is Ownable {
     struct User {
         bytes32 tenantHash;
         uint256 timestamp;
+        string tenantId;
     }
 
     mapping(address => User) private tenantAddressMapping;
@@ -15,12 +16,13 @@ contract IdentityStore is Ownable {
     function setTenant(
         bytes32 _tenantHash,
         address _userAddress,
-        uint256 _timestamp) onlyOwner public {
+        uint256 _timestamp,
+        string _tenantId) onlyOwner public {
 
         require(!userAddressExists(_userAddress));
         require(!userTenantHashExists(_tenantHash));
 
-        User memory newUser = User(_tenantHash, _timestamp);
+        User memory newUser = User(_tenantHash, _timestamp, _tenantId);
         
         tenantAddressMapping[_userAddress] = newUser;
         tenantHashMapping[_tenantHash] = _userAddress;
@@ -34,7 +36,8 @@ contract IdentityStore is Ownable {
         require(userTenantHashExists(_oldHash), "Old hash does not exist.");
         require(!userTenantHashExists(_newHash), "New hash is already registered.");
         address currentAddress = tenantHashMapping[_oldHash];
-        User memory newUserInfo = User(_newHash, _timestamp);
+        User memory oldUserInfo = tenantAddressMapping[currentAddress];
+        User memory newUserInfo = User(_newHash, _timestamp, oldUserInfo.tenantId);
 
         // update address mapping to user
         tenantAddressMapping[currentAddress] = newUserInfo;
