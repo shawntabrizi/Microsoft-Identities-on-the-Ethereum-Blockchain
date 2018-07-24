@@ -10,11 +10,7 @@ contract CorpCoin is EIP20Interface {
     uint256 constant private MAX_UINT256 = 2**256 - 1;
     mapping (address => uint256) public balances;
     mapping (address => mapping (address => uint256)) public allowed;
-
-    function External(address addr) public {
-        idStore = IdentityStore(addr);
-    }
-    
+  
     function helloWorld(address _user) constant public returns (string) {
         return(idStore.tenantMapping(_user));
     }
@@ -28,7 +24,8 @@ contract CorpCoin is EIP20Interface {
         return true;
     }
 
-    function CorpCoin(uint256 _initialAmount) public {
+    function CorpCoin(address addr, uint256 _initialAmount) public {
+        idStore = IdentityStore(addr);
         balances[msg.sender] = _initialAmount;
         totalSupply = _initialAmount;
     }
