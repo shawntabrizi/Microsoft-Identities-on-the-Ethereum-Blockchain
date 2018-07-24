@@ -12,11 +12,9 @@ def get_ethereum_contract(file_path):
     
     return contract
 
-file_path = '../../identity-smart-contract//build/contracts/IdentityStore.json'
-contract_def = get_ethereum_contract(file_path)
-
-CONTRACT_BYTECODE = contract_def['bytecode'] 
-CONTRACT_ABI = contract_def['abi']
+contract_dict = json.loads(IDENTITY_STORE_JSON)
+CONTRACT_BYTECODE = contract_dict['bytecode'] 
+CONTRACT_ABI = contract_dict['abi']
 
 def create_contract(user_address): 
     w3 = Web3(HTTPProvider("https://ropsten.infura.io/v3/380500510ecf4d9cbac74fdf566c9065"))
@@ -29,7 +27,6 @@ def create_contract(user_address):
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
     print('created contract address:' + tx_receipt.contractAddress)
-
     return tx_receipt.contractAddress
 """
     w3.eth.enable_unaudited_features()
@@ -49,10 +46,11 @@ def create_contract(user_address):
 """
 
 def main():
-    file_path = './resources/IdentityStore.json'
-    contract_address = '0x313CaC645b2210b6591EEDd7a6D492521819CF1E'
+    file_path = '../../identity-smart-contract//build/contracts/IdentityStore.json'
     contract_definition = get_ethereum_contract(file_path)
+    contract_address = '0x313CaC645b2210b6591EEDd7a6D492521819CF1E'
     deploy(contract_definition, contract_address)
 
 if __name__ == '__main__':
     main()
+

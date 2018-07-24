@@ -1,4 +1,4 @@
-IDENTITY_STORE_JSON = """
+IDENTITY_STORE_JSON = r"""
 {
   "contractName": "IdentityStore",
   "abi": [
