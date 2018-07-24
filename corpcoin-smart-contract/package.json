@@ -1,7 +1,6 @@
 {
-  "name": "identity-smart-contract",
+  "name": "corpcoin-smart-contract",
   "version": "1.0.0",
-  "description": "",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
@@ -9,13 +8,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "asyncawait": "^1.0.7",
-    "openzeppelin-solidity": "1.11.0",
-    "truffle-hdwallet-provider": "0.0.5",
-    "zeppelin-solidity": "^1.10.0"
-  }
+    "@0xcert/ethereum-erc721": "^1.10.0"
+  },
+  "devDependencies": {},
+  "description": ""
 }

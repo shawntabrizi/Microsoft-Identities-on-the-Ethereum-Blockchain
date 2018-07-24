@@ -7,6 +7,11 @@ import jwt
 import cryptography
 import hashlib
 
+from deploy_contract import deploy
+
+from web3.auto import w3
+from eth_account.messages import defunct_hash_message
+
 from requests.auth import HTTPBasicAuth
 from flask import Flask, json, jsonify, request
 from flask_restful import Resource, Api
@@ -25,6 +30,8 @@ authErrorExpiredToken = { "code" : "Your token has expired."}
 authErrorNoBody = { "code" : "Missing payload."}
 invalidJsonInBody = { "code" : "Invalid JSON in body"}
 authErrorClaimNotSupport = { "code" : "The there's an unsupported claim in the list of claims to extract"}
+missingSignature = { "code" : "Missing signature"}
+mismatchAddressSignature = { "code" : "Address doesn't match with signature"}
 
 res = requests.get('https://login.microsoftonline.com/common/.well-known/openid-configuration')
 jwk_uri = res.json()['jwks_uri']
@@ -32,9 +39,18 @@ res = requests.get(jwk_uri)
 jwk_keys = res.json()
 publicKeyMap = {}
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def index():
     return "Welcome to MSFT identities on the Ethereum Blockchain"
+
+@app.route("/deploy", methods=['POST'])
+def deploy_contract():
+    contract_definition = json.loads(request.data)
+    contract_address = '0x313CaC645b2210b6591EEDd7a6D492521819CF1E'
+    contract = deploy(contract_definition, contract_address)
+    print('contract:{0}'.format(contract))
+    return app.make_response(jsonify(contract))
+    
 
 @app.before_request
 def before_request():
@@ -45,6 +61,7 @@ def before_request():
         resp.status = "401"
         resp.content_type = "application/json"
         return resp
+
     try:
         json_string = json.loads(request.data)
     except ValueError:
@@ -52,7 +69,35 @@ def before_request():
         resp.status = "401"
         resp.content_type = "application/json"
         return resp
+
+
+@app.route("/validate", methods=['POST'])
+@app.route("/validate/<secret>", methods=['POST']) # for testing to skip certain step, look below
+def validate(secret=None):
+    # already validated above
+    print("Validating")
+    json_string = json.loads(request.data)
     registrationReq = json_string["registration"]
+    
+    address = registrationReq["address"]
+    print("Address: " + address)
+    signature = json_string["signature"]
+    
+    if not signature:
+        resp = app.make_response(jsonify(missingSignature))
+        print("could not find signature from payload.")
+        resp.status = "400"
+        resp.content_type = "application/json"
+        return resp
+
+    verified_address = verify_address(registrationReq, signature)
+    if verified_address != address:
+        resp = app.make_response(jsonify(mismatchAddressSignature))
+        print("signature doesn't match address.")
+        resp.status = "400"
+        resp.content_type = "application/json"
+        return resp
+    
     if not registrationReq or not registrationReq["token"]:
         resp = app.make_response(jsonify(invalidJsonInBody))
         resp.status = "401"
@@ -91,6 +136,7 @@ def before_request():
         decoded_token = jwt.decode(
             access_token,
             public_key,
+            verify=True if secret != 'test' else False, # for debug
             algorithms=token_header['alg'],
             audience="79d908c3-6cc1-40c6-bbf1-9f7140e927fb")
     except jwt.exceptions.ExpiredSignatureError:
@@ -117,7 +163,6 @@ def before_request():
     
     tenantId = decoded_token["tid"]
     userObjectId = decoded_token["oid"]
-    address = registrationReq["address"]
     issuedAtTicks = decoded_token["iat"]
 
     print (decoded_token)
@@ -132,11 +177,15 @@ def before_request():
     resp.status = "200"
     return resp
 
-todos = {
-    '1' : 'first_todo',
-    '2' : 'second_todo',
-    '3' : 'third_todo'
-}
+
+def verify_address(registrationReq, signature):
+    message = json.dumps(registrationReq, sort_keys=True, separators=(',', ':'))
+    print("message:" + message)
+    message_hash = defunct_hash_message(text=message)
+    print("message hash:" + str(message_hash))
+    address = w3.eth.account.recoverHash(message_hash, signature=signature)
+    print("address:" + address)
+    return address
 
 
 class Metadata(Resource):
@@ -147,22 +196,6 @@ class Metadata(Resource):
         return resp
 
 
-class TodoSimple(Resource):
-    
-    def get(self, todo_id):
-        return {todo_id: todos.get(todo_id)}
-
-    def put(self, todo_id):
-        todos[todo_id] = request.form['data']
-        return {todo_id: todos[todo_id]}
-
-    def delete(self, todo_id):
-        if todos[todo_id] is not None:
-            del todos[todo_id]
-            return {}
-        
-
-api.add_resource(TodoSimple, '/todo/<string:todo_id>')
 api.add_resource(Metadata, '/todo/')
 
 if __name__ == '__main__':
