@@ -1,7 +1,6 @@
 import json
 import time
 import web3
-import sha3
 
 from web3 import Web3, HTTPProvider
 from web3.contract import ConciseContract
@@ -69,13 +68,13 @@ def main():
 
     data = 'maydata'
     hash_data = data.encode('utf-8')
-    test_account = '0x50c026Df0CD87A38d7Bc746Eb6BD8702fd243B0c'
-    tenant_id = "sup" 
+    test_address = '0x50c026Df0CD87A38d7Bc746Eb6BD8702fd243B0c'
+    tenant_id = "suup" 
     timestamp = 123123
 
-    setTenant(contract, hash_data, test_account, 123123, tenant_id)
+    # setTenant(contract, hash_data, test_address, timestamp, tenant_id)
 
-    # validate_tenant(contract, tenant_id, test_account, 12312)
+    validate_tenant(contract, tenant_id, test_address, 12312)
 
 if __name__ == '__main__':
     main()
