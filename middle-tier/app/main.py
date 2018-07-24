@@ -8,7 +8,7 @@ import cryptography
 import hashlib
 import sha3
 
-from deploy_contract import deploy
+from deploy_contract import create_get_contract
 
 from web3.auto import w3
 from eth_account.messages import defunct_hash_message
@@ -42,6 +42,7 @@ publicKeyMap = {}
 
 @app.route("/", methods=['GET'])
 def index():
+    validate(None)
     return "Welcome to MSFT identities on the Ethereum Blockchain"
 
 @app.route("/deploy", methods=['POST'])
