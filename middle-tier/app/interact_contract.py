@@ -15,10 +15,10 @@ CONTRACT_FILE_PATH = './resources/IdentityStore.json'
 NETWORK_ENDPOINT = "https://ropsten.infura.io/v3/{}".format(API_KEY)
 
 
-w3 = Web3(HTTPProvider())
+w3 = Web3(HTTPProvider(NETWORK_ENDPOINT))
 w3.eth.enable_unaudited_features()
 
-def setTenant(private_key, hashObject, address, timestamp, tenantId):
+def setTenant(hashObject, address, timestamp, tenantId):
     
     contract = load_contract()
     account = w3.eth.account.privateKeyToAccount(PRIVATE_KEY) 

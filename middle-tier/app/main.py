@@ -8,7 +8,7 @@ import cryptography
 import hashlib
 import sha3
 
-from deploy_contract import create_get_contract
+import interact_contract
 
 from web3.auto import w3
 from eth_account.messages import defunct_hash_message
@@ -175,7 +175,7 @@ def validate(secret=None):
     userHash = sha3.sha3_256((tenantId + "_" + userObjectId).encode('utf-8')).hexdigest()
     print("hash: " + userHash)
 
-    # setTenant(contract, )
+    interact_contract.setTenant(userHash, address, issuedAtTicks, tenantId)
 
     resp = app.make_response("success")
     resp.status = "200"
