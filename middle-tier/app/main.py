@@ -75,8 +75,29 @@ def before_request():
 @app.route("/validate/<secret>", methods=['POST']) # for testing to skip certain step, look below
 def validate(secret=None):
     # already validated above
+    print("Validating")
     json_string = json.loads(request.data)
     registrationReq = json_string["registration"]
+    
+    address = registrationReq["address"]
+    print("Address: " + address)
+    signature = json_string["signature"]
+    
+    if not signature:
+        resp = app.make_response(jsonify(missingSignature))
+        print("could not find signature from payload.")
+        resp.status = "400"
+        resp.content_type = "application/json"
+        return resp
+
+    verified_address = verify_address(registrationReq, signature)
+    if verified_address != address:
+        resp = app.make_response(jsonify(mismatchAddressSignature))
+        print("signature doesn't match address.")
+        resp.status = "400"
+        resp.content_type = "application/json"
+        return resp
+    
     if not registrationReq or not registrationReq["token"]:
         resp = app.make_response(jsonify(invalidJsonInBody))
         resp.status = "401"
@@ -142,7 +163,6 @@ def validate(secret=None):
     
     tenantId = decoded_token["tid"]
     userObjectId = decoded_token["oid"]
-    address = registrationReq["address"]
     issuedAtTicks = decoded_token["iat"]
 
     print (decoded_token)
@@ -153,29 +173,13 @@ def validate(secret=None):
     userHash = hashlib.sha256((tenantId + "_" + userObjectId).encode()).hexdigest()
     print("hash: " + userHash)
 
-    signature = json_string["signature"]
-    if not signature:
-        resp = app.make_response(jsonify(missingSignature))
-        print("could not find signature from payload.")
-        resp.status = "400"
-        resp.content_type = "application/json"
-        return resp
-
-    verified_address = verify_address(registrationReq, signature)
-    if verified_address != address:
-        resp = app.make_response(jsonify(mismatchAddressSignature))
-        print("signature doesn't match address.")
-        resp.status = "400"
-        resp.content_type = "application/json"
-        return resp
-
     resp = app.make_response("success")
     resp.status = "200"
     return resp
 
 
 def verify_address(registrationReq, signature):
-    message = json.dumps(registrationReq)
+    message = json.dumps(registrationReq, sort_keys=True, separators=(',', ':'))
     print("message:" + message)
     message_hash = defunct_hash_message(text=message)
     print("message hash:" + str(message_hash))
