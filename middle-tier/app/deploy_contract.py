@@ -26,9 +26,10 @@ def main():
     contract_abi = contract_definition['abi']
 
     contract = w3.eth.contract(abi=contract_abi, address=contract_address)
-    print(json.dumps(contract_abi))
-    # w3.personal.importRawKey('389e3c80b20359988263bd3abd88a71eb5d964ddae1b3430cf4be61c7e17381f', '!!123abc')
-
+    
+    print(contract)
+    
+    w3.personal.importRawKey('389e3c80b20359988263bd3abd88a71eb5d964ddae1b3430cf4be61c7e17381f', '!!123abc')
 
 
 if __name__ == '__main__':
