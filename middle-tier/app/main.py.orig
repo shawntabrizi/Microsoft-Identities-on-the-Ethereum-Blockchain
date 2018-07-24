@@ -5,7 +5,6 @@ import sys
 import requests
 import jwt
 import cryptography
-import hashlib
 
 from requests.auth import HTTPBasicAuth
 from flask import Flask, json, jsonify, request
@@ -125,9 +124,6 @@ def before_request():
     print(userObjectId)
     print(address)
     print(issuedAtTicks)
-    userHash = hashlib.sha256((tenantId + "_" + userObjectId).encode()).hexdigest()
-    print("hash: " + userHash)
-
     resp = app.make_response("success")
     resp.status = "200"
     return resp
