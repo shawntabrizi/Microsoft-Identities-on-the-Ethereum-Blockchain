@@ -27,7 +27,6 @@ def create_contract(user_address):
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
     print('created contract address:' + tx_receipt.contractAddress)
-
     return tx_receipt.contractAddress
 """
     w3.eth.enable_unaudited_features()

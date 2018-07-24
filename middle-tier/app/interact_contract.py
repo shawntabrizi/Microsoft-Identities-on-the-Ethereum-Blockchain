@@ -1,25 +1,27 @@
 import json
 import time
 import web3
+import sha3
 
+from os import environ
 from web3 import Web3, HTTPProvider
 from web3.contract import ConciseContract
 
-w3 = Web3(HTTPProvider("https://ropsten.infura.io/v3/380500510ecf4d9cbac74fdf566c9065"))
+API_KEY = environ.get('API_KEY')  
+PRIVATE_KEY = environ.get('PRIVATE_KEY')
+CONTRACT_ADDRESS = environ.get('CONTRACT_ADDRESS')
+CONTRACT_FILE_PATH = './resources/IdentityStore.json'
+
+NETWORK_ENDPOINT = "https://ropsten.infura.io/v3/{}".format(API_KEY)
+
+
+w3 = Web3(HTTPProvider())
 w3.eth.enable_unaudited_features()
 
-def get_ethereum_contract(file_path):
+def setTenant(private_key, hashObject, address, timestamp, tenantId):
     
-    contract_file = open(file_path, 'r')
-    contract = json.load(contract_file)
-    
-    return contract
-
-
-def setTenant(contract, hashObject, address, timestamp, tenantId):
-
-    private_key = '389e3c80b20359988263bd3abd88a71eb5d964ddae1b3430cf4be61c7e17381f'
-    account = w3.eth.account.privateKeyToAccount(private_key) 
+    contract = load_contract()
+    account = w3.eth.account.privateKeyToAccount(PRIVATE_KEY) 
 
     get_data = contract.encodeABI(
         fn_name='setTenant',
@@ -38,7 +40,11 @@ def setTenant(contract, hashObject, address, timestamp, tenantId):
         'nonce': w3.eth.getTransactionCount(account.address)
     }
 
+<<<<<<< HEAD
     signed = w3.eth.account.signTransaction(transaction, private_key)
+=======
+    signed = w3.eth.account.signTransaction(transaction, PRIVATE_KEY)
+>>>>>>> 287024b0aaba7631c6e9853771d9cea3066f1207
 
     txn_hash = w3.eth.sendRawTransaction(signed.rawTransaction)
     txn = w3.eth.getTransaction(txn_hash)
@@ -46,6 +52,7 @@ def setTenant(contract, hashObject, address, timestamp, tenantId):
     print('Contract Transaction Hash {}'.format(txn_hash))
     print('Transaction {}'.format(txn))
 
+<<<<<<< HEAD
 def get_deloyed_contract(contract_definition, contract_address): 
 
     contract_abi = contract_definition['abi']
@@ -78,3 +85,22 @@ def main():
 
 if __name__ == '__main__':
     main()
+=======
+
+def get_ethereum_contract(file_path='./resources/IdentityStore.json'):
+    contract_file = open(file_path, 'r')
+    contract = json.load(contract_file)
+    
+    return contract
+
+def get_deloyed_contract(contract_definition, contract_address): 
+    contract_abi = contract_definition['abi']
+    contract = w3.eth.contract(abi=contract_abi, address=contract_address)
+    return contract
+
+
+def load_contract():
+    contract_definition = get_ethereum_contract(CONTRACT_FILE_PATH) 
+    return get_deloyed_contract(contract_definition, CONTRACT_ADDRESS)
+
+>>>>>>> 287024b0aaba7631c6e9853771d9cea3066f1207
