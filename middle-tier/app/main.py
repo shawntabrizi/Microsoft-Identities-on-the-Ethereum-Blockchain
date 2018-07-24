@@ -171,7 +171,7 @@ def validate(secret=None):
     print(userObjectId)
     print(address)
     print(issuedAtTicks)
-    userHash = sha3.sha3_224((tenantId + "_" + userObjectId).encode('utf-8')).hexdigest()
+    userHash = sha3.sha3_256((tenantId + "_" + userObjectId).encode('utf-8')).hexdigest()
     print("hash: " + userHash)
 
     # setTenant(contract, )
