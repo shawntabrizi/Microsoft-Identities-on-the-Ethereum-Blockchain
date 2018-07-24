@@ -10,20 +10,8 @@ contract CorpCoin is EIP20Interface {
     uint256 constant private MAX_UINT256 = 2**256 - 1;
     mapping (address => uint256) public balances;
     mapping (address => mapping (address => uint256)) public allowed;
-  /*
-    function helloWorld(address _user) constant public returns (string) {
-        return(idStore.tenantMapping(_user));
-    }
-    
-    function Ping() public constant returns(bool response) {
-        return idStore.isAlive();
-    }
-    
-    function onlyHiWorks() public constant returns (bool response) {
-        require(keccak256("Hi") == keccak256(idStore.tenantMapping(msg.sender)));
-        return true;
-    }
-*/
+
+
     function CorpCoin(address addr, uint256 _initialAmount) public {
         idStore = IdentityInterface(addr);
         balances[msg.sender] = _initialAmount;
