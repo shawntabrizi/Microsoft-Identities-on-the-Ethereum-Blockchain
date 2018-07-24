@@ -133,7 +133,6 @@ contract('User hash test 3', async () => {
 });
 
 contract('is valid user', async () => {
-
     it("should verify valid user", async () => {
        let instance = await Identity.deployed();
        
@@ -144,46 +143,57 @@ contract('is valid user', async () => {
 
        await instance.setTenant(tenantHash, address, timestamp, tenantId);
 
-       var verified = await instance.isValid.call(tenantHash, address);
+       var verified = await instance.isValid.call(tenantId, address, 0);
        assert(verified);
     });
-    
 });
 
 contract('is valid user 2', async () => {
-
-    it("should reject invalid user hash", async () => {
+    it("should reject valid user if the timestamp is too old", async () => {
        let instance = await Identity.deployed();
        
        var tenantHash = web3.sha3('tenantId!');
        var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
        var timestamp = 123123123;
-       var tenantHash2 = web3.sha3('tenantId+');
        var tenantId = "tenantID";
 
        await instance.setTenant(tenantHash, address, timestamp, tenantId);
 
-       var verified = await instance.isValid.call(tenantHash2, address);
+       var verified = await instance.isValid.call(tenantId, address, 1231231234);
        assert(!verified);
     });
-    
 });
 
-contract('is valid user 3', async () => {
-
-    it("should reject invalid user address", async () => {
+contract('is valid user3', async () => {
+    it("should reject a user with an address that isnt registered", async () => {
        let instance = await Identity.deployed();
        
        var tenantHash = web3.sha3('tenantId!');
        var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
        var timestamp = 123123123;
-       var address2 = "0x47635c238f8af460e37e772387364ddd86c43a62";
        var tenantId = "tenantID";
+       var address2 = "0x47635c238f8af460e37e772387364ddd86c43a62";
 
        await instance.setTenant(tenantHash, address, timestamp, tenantId);
 
-       var verified = await instance.isValid.call(tenantHash, address2);
+       var verified = await instance.isValid.call(tenantId, address2, 0);
        assert(!verified);
     });
-    
+});
+
+contract('is valid user4', async () => {
+    it("should reject a user with an address that isnt registered to the correct tenant id", async () => {
+       let instance = await Identity.deployed();
+       
+       var tenantHash = web3.sha3('tenantId!');
+       var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+       var timestamp = 123123123;
+       var tenantId = "tenantID";
+       var tenantId2 = "tenantID2";
+
+       await instance.setTenant(tenantHash, address, timestamp, tenantId);
+
+       var verified = await instance.isValid.call(tenantId2, address, 0);
+       assert(!verified);
+    });
 });
