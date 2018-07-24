@@ -40,19 +40,19 @@ function get_private_key()
 		pKey = '0' + pKey;
 	}
 	pKey = pKey.length > hex_digits ?  pKey.slice(0, hex_digits) : pKey;
-	console.log(pKey);
-
 	return pKey;
 }
 
 function get_eth_account()
 {
-	return web3.eth.accounts.create();
+	console.log("creating account");
+	var account = web3.eth.accounts.create();
+	final_output([account]);
+	return account;
 }
 
 function set_qr_account(account)
 {
-	console.log(account.privateKey);
 	jQuery('#qrcodeAccount').qrcode({
 		text	: account.privateKey
 	});	

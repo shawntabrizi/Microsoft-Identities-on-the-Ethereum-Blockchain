@@ -28,8 +28,8 @@ async function sign_token() {
     final_output()
 }
 
-async function final_output() {
-    var accounts = await web3.eth.getAccounts()
+async function final_output(in_accounts) {
+    var accounts = in_accounts ?  in_accounts : await web3.eth.getAccounts()
     var output = {}
     output.registration = {}
     output.registration.address = accounts[0]
