@@ -7,6 +7,9 @@ import jwt
 import cryptography
 import hashlib
 
+from web3.auto import w3
+from eth_account.messages import defunct_hash_message
+
 from requests.auth import HTTPBasicAuth
 from flask import Flask, json, jsonify, request
 from flask_restful import Resource, Api
@@ -25,6 +28,8 @@ authErrorExpiredToken = { "code" : "Your token has expired."}
 authErrorNoBody = { "code" : "Missing payload."}
 invalidJsonInBody = { "code" : "Invalid JSON in body"}
 authErrorClaimNotSupport = { "code" : "The there's an unsupported claim in the list of claims to extract"}
+missingSignature = { "code" : "Missing signature"}
+mismatchAddressSignature = { "code" : "Address doesn't match with signature"}
 
 res = requests.get('https://login.microsoftonline.com/common/.well-known/openid-configuration')
 jwk_uri = res.json()['jwks_uri']
@@ -91,6 +96,7 @@ def before_request():
         decoded_token = jwt.decode(
             access_token,
             public_key,
+            # verify=False, # for debug
             algorithms=token_header['alg'],
             audience="79d908c3-6cc1-40c6-bbf1-9f7140e927fb")
     except jwt.exceptions.ExpiredSignatureError:
@@ -128,6 +134,22 @@ def before_request():
     userHash = hashlib.sha256((tenantId + "_" + userObjectId).encode()).hexdigest()
     print("hash: " + userHash)
 
+    signature = json_string["signature"]
+    if not signature:
+        resp = app.make_response(jsonify(missingSignature))
+        print("could not find signature from payload.")
+        resp.status = "400"
+        resp.content_type = "application/json"
+        return resp
+
+    verified_address = verify_address(registrationReq, signature)
+    if verified_address != address:
+        resp = app.make_response(jsonify(mismatchAddressSignature))
+        print("signature doesn't match address.")
+        resp.status = "400"
+        resp.content_type = "application/json"
+        return resp
+
     resp = app.make_response("success")
     resp.status = "200"
     return resp
@@ -137,6 +159,15 @@ todos = {
     '2' : 'second_todo',
     '3' : 'third_todo'
 }
+
+def verify_address(registrationReq, signature):
+    message = json.dumps(registrationReq)
+    print("message:" + message)
+    message_hash = defunct_hash_message(text=message)
+    print("message hash:" + str(message_hash))
+    address = w3.eth.account.recoverHash(message_hash, signature=signature)
+    print("address:" + address)
+    return address
 
 
 class Metadata(Resource):
