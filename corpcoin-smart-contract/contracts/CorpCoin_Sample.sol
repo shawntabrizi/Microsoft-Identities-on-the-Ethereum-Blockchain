@@ -21,6 +21,7 @@ contract CorpCoin is EIP20Interface {
 
     function InitializeCoinToUser(address _to) public {
         require(coinAllocated[_to] == false);
+        require(idStore.isValid(_to, 0), "User not valid for transfer");
         if( totalSupply - numberOfCoins >= 0) {
             balances[_to] += numberOfCoins;
             totalSupply -= numberOfCoins;
@@ -30,7 +31,7 @@ contract CorpCoin is EIP20Interface {
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
         require(balances[msg.sender] >= _value);
-        require(idStore.isValid(_to, block.timestamp - (expiration * 1 days)), "User not valid for transfer");
+        require(idStore.isValid(_to, 0), "User not valid for transfer");
         balances[msg.sender] -= _value;
         balances[_to] += _value;
         emit Transfer(msg.sender, _to, _value); 
