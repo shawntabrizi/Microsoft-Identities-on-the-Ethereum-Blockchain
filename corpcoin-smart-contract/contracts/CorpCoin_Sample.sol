@@ -1,16 +1,16 @@
 pragma solidity ^0.4.24;
 
-import "./ERC721.sol";
-import "./IdentityStoreInterface.sol";
+import "./ERC20.sol";
+import "./../../identity-smart-contract/contracts/IdentityInterface.sol";
 
 contract CorpCoin is EIP20Interface {
     
-    IdentityStore idStore;
+    IdentityInterface idStore;
     uint256 expiration = 30 days;
     uint256 constant private MAX_UINT256 = 2**256 - 1;
     mapping (address => uint256) public balances;
     mapping (address => mapping (address => uint256)) public allowed;
-  
+  /*
     function helloWorld(address _user) constant public returns (string) {
         return(idStore.tenantMapping(_user));
     }
@@ -23,9 +23,9 @@ contract CorpCoin is EIP20Interface {
         require(keccak256("Hi") == keccak256(idStore.tenantMapping(msg.sender)));
         return true;
     }
-
+*/
     function CorpCoin(address addr, uint256 _initialAmount) public {
-        idStore = IdentityStore(addr);
+        idStore = IdentityInterface(addr);
         balances[msg.sender] = _initialAmount;
         totalSupply = _initialAmount;
     }
