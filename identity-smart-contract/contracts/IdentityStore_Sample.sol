@@ -32,20 +32,20 @@ contract IdentityStore is Ownable {
         if (userAddressExists(_userAddress) && !userTenantHashExists(_tenantHash)) {
             
             bytes32 oldHash = tenantAddressMapping[_userAddress].tenantHash;
-            this.updateHash(oldHash, _tenantHash, _timestamp);
+            updateHash(oldHash, _tenantHash, _timestamp);
             return;
         }
         
         // Update user address.
         if (userTenantHashExists(_tenantHash) && !userAddressExists(_userAddress)) {
             address oldAddress = tenantHashMapping[_tenantHash];
-            this.updateAddress(oldAddress, _userAddress);
+            updateAddress(oldAddress, _userAddress);
             return;
         }
         
         // Update timestamp
         if (userTenantHashExists(_tenantHash) && userAddressExists(_userAddress)) {
-            this.updateTimestamp(_tenantHash, _timestamp);
+            updateTimestamp(_tenantHash, _timestamp);
             return;
         }
     }
@@ -53,7 +53,7 @@ contract IdentityStore is Ownable {
     function updateHash(
         bytes32 _oldHash, 
         bytes32 _newHash, 
-        uint256 _timestamp) onlyOwner private {
+        uint256 _timestamp) private {
 
         require(userTenantHashExists(_oldHash), "Old hash does not exist.");
         require(!userTenantHashExists(_newHash), "New hash is already registered.");
