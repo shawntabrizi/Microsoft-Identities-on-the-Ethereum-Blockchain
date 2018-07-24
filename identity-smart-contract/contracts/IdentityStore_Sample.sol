@@ -182,7 +182,7 @@ contract IdentityStore is Ownable {
     function hasAccountExpired(address userAddress, uint validDays ) view public returns(bool) {
         require(userAddressExists(userAddress));
         uint256 userTimestamp = tenantAddressMapping[userAddress].timestamp;
-        if(userTimestamp  >= userTimestamp + (validDays * 1 days)) {
+        if(now >= userTimestamp + (validDays * 1 days)) {
             return false;
         }
         
