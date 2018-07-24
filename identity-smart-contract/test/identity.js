@@ -19,5 +19,163 @@ contract('Identity', function(accounts) {
     });
 });
 
+contract('Identity', function(accounts) {
+  
+    it("Should update the registration of Tenant with new account -part 1", function() {
+        return Identity.deployed().then(function(instance) {
+        
+            var tenantHash = web3.sha3('tenantId!');
+            var address1 = "0x47635c238f8af460e37e772387364ddd86c43a61";
+            var address2 = "0x47635c238f8af460e37e772387364ddd86c43a62";
+            var timestamp = 123123123
 
+            instance.setTenant(tenantHash, address1, timestamp);
+            instance.updateAddress(address1, address2);
 
+            return instance.userAddressExists.call(address1);
+
+        }).then(function(result) {
+            assert.equal(result, false);
+        });
+    });
+});
+
+contract('Identity', function(accounts) {
+  
+    it("Should update the registration of Tenant with new account -part 2", function() {
+        return Identity.deployed().then(function(instance) {
+        
+            var tenantHash = web3.sha3('tenantId!');
+            var address1 = "0x47635c238f8af460e37e772387364ddd86c43a61";
+            var address2 = "0x47635c238f8af460e37e772387364ddd86c43a62";
+            var timestamp = 123123123
+
+            instance.setTenant(tenantHash, address1, timestamp);
+            instance.updateAddress(address1, address2);
+
+            return instance.userAddressExists.call(address2);
+
+        }).then(function(result) {
+            assert.equal(result, true);
+        });
+    });
+    
+});
+
+contract('User hash test', async () => {
+
+    it("should update correctly", async () => {
+       let instance = await Identity.deployed();
+       
+       var tenantHash = web3.sha3('tenantId!');
+       var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+       var timestamp = 123123123;
+       var newTenantHash = web3.sha3('tenantId+');
+
+       await instance.setTenant(tenantHash, address, timestamp);
+       await instance.updateHash(tenantHash, newTenantHash, 1234);
+
+       var updated = await instance.userTenantHashExists.call(newTenantHash);
+       var removed = await instance.userTenantHashExists.call(tenantHash);
+       assert(updated);
+       assert(!removed);
+    });
+    
+});
+
+contract('User hash test 2', async () => {
+
+    it("should return an error when old user hash does not exist", async () => {
+       let instance = await Identity.deployed();
+       
+       var tenantHash = web3.sha3('tenantId!');
+       var newTenantHash = web3.sha3('tenantId+');
+
+       var threwException = false
+       try {
+        await instance.updateHash(tenantHash, newTenantHash, 1234);
+       } catch (error) {
+           threwException = true;
+       }
+       assert(threwException);
+    });
+
+});
+
+contract('User hash test 3', async () => {
+
+    it("should return an error when new user hash is alerady registered", async () => {
+       let instance = await Identity.deployed();
+       
+       var tenantHash = web3.sha3('tenantId!');
+       var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+       var timestamp = 123123123;
+       var newTenantHash = web3.sha3('tenantId+');
+       var newAddress = "0x47635c238f8af460e37e772387364ddd86c43a62";
+
+       await instance.setTenant(tenantHash, address, timestamp);
+       await instance.setTenant(newTenantHash, newAddress, timestamp);
+
+       var threwException = false
+       try {
+        await instance.updateHash(tenantHash, newTenantHash, 1234);
+       } catch (error) {
+           threwException = true;
+       }
+       assert(threwException);
+    });
+    
+});
+
+contract('is valid user', async () => {
+
+    it("should verify valid user", async () => {
+       let instance = await Identity.deployed();
+       
+       var tenantHash = web3.sha3('tenantId!');
+       var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+       var timestamp = 123123123;
+
+       await instance.setTenant(tenantHash, address, timestamp);
+
+       var verified = await instance.isValid.call(tenantHash, address);
+       assert(verified);
+    });
+    
+});
+
+contract('is valid user 2', async () => {
+
+    it("should reject invalid user hash", async () => {
+       let instance = await Identity.deployed();
+       
+       var tenantHash = web3.sha3('tenantId!');
+       var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+       var timestamp = 123123123;
+       var tenantHash2 = web3.sha3('tenantId+');
+
+       await instance.setTenant(tenantHash, address, timestamp);
+
+       var verified = await instance.isValid.call(tenantHash2, address);
+       assert(!verified);
+    });
+    
+});
+
+contract('is valid user 3', async () => {
+
+    it("should reject invalid user address", async () => {
+       let instance = await Identity.deployed();
+       
+       var tenantHash = web3.sha3('tenantId!');
+       var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+       var timestamp = 123123123;
+       var address2 = "0x47635c238f8af460e37e772387364ddd86c43a62";
+
+       await instance.setTenant(tenantHash, address, timestamp);
+
+       var verified = await instance.isValid.call(tenantHash, address2);
+       assert(!verified);
+    });
+    
+});

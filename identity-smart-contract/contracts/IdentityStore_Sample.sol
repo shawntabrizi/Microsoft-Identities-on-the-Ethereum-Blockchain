@@ -31,7 +31,8 @@ contract IdentityStore is Ownable {
         bytes32 _newHash, 
         uint256 _timestamp) onlyOwner public {
 
-        require(userTenantHashExists(_oldHash));
+        require(userTenantHashExists(_oldHash), "Old hash does not exist.");
+        require(!userTenantHashExists(_newHash), "New hash is already registered.");
         address currentAddress = tenantHashMapping[_oldHash];
         User memory newUserInfo = User(_newHash, _timestamp);
 
@@ -45,6 +46,15 @@ contract IdentityStore is Ownable {
         tenantHashMapping[_newHash] = currentAddress;
     }
 
+    function updateTimestamp(bytes32 _tenantHash,uint256 _timestamp) onlyOwner public {
+        tenantAddressMapping[tenantHashMapping[_tenantHash]].timestamp = _timestamp;
+    }
+
+    function isValid(
+        bytes32 _tenantHash, 
+        address _userAddress) view public returns(bool) {
+        return tenantHashMapping[_tenantHash] == _userAddress;
+    }
 
     function userAddressExists(address userAddress) view public returns(bool) {       
         if(tenantAddressMapping[userAddress].timestamp == 0) {
@@ -52,6 +62,14 @@ contract IdentityStore is Ownable {
         }
         return true;
     }
+
+    function hasAccountExpired(address userAddress, uint256 timestamp ) view public returns(bool) {
+        require(userAddressExists(userAddress));
+        uint256 userTimestamp = tenantAddressMapping[userAddress].timestamp;
+        require(userTimestamp > 0);
+        
+        return false;
+    }       
 
     function userTenantHashExists(bytes32 tenantHash) view public returns(bool){
         if(tenantHashMapping[tenantHash] == 0) {
@@ -64,10 +82,12 @@ contract IdentityStore is Ownable {
         User memory existingUser = tenantAddressMapping[oldUserAddress];
         
         require(!userAddressExists(newUserAddress));
+        require(userAddressExists(oldUserAddress));
 
         tenantHashMapping[existingUser.tenantHash] = newUserAddress;
         tenantAddressMapping[newUserAddress] = existingUser;
         delete tenantAddressMapping[oldUserAddress];
     }
+
 
 }
