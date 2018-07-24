@@ -36,7 +36,7 @@ def deploy_contract(file_path = '../../identity-smart-contract/contracts/Identit
     compiled_code = compile_source(''.join(source_code))
 
     # store contract_name so we keep our code DRY
-    contract_name = 'MSIDonETH'
+    contract_name = 'IdentityStore'
 
     # lets make the code a bit more readable by storing these values in variables
     contract_bytecode = compiled_code[f'<stdin>:{contract_name}']['bin']

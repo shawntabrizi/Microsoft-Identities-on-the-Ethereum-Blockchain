@@ -62,13 +62,3 @@ contract Ownable {
     owner = _newOwner;
   }
 }
-
-contract IdentityStore is Ownable {
-
-    mapping(address => string) public tenantMapping;
-    
-    function setTenant(address _user, string _tenant) public onlyOwner {
-        tenantMapping[_user] = _tenant;
-    }
-    
-}
