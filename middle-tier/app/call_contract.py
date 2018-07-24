@@ -35,11 +35,12 @@ def set_tenant(user_address, tenant_id):
     tenant_hash = hash_keccak(tenant_id)
     timestamp = int(time.time())
 
-    tx_hash =contract.functions.setTenant(
+    tx_hash = contract.functions.setTenant(
         tenant_hash, 
         user_address,
         timestamp,
         tenant_id).transact()
+
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
     return True
@@ -53,36 +54,3 @@ def is_valid(tenant_id, user_address):
     isValid = greeter.functions.isValid(tenant_id, user_address, timestamp).call()
 
     return isValid
-
-
-""" log for HGUAN
-w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
-w3.eth.defaultAccount = w3.eth.accounts[0]
-
-# create contract on network
-Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
-tx_hash = Contract.constructor().transact()
-tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-
-# initiate contract
-contract = w3.eth.contract(
-    address=tx_receipt.contractAddress,
-    abi=abi)
-
-# send setTenant on contract
-tenant_hash = ''
-user_address = '0x6D31165d5D932D571F3B44695653b46dCC327E84'
-timestamp = 555555
-tenant_id = 'microsoft'
-tx_hash =greeter.functions.setTenant(
-    tenant_hash, 
-    user_address,
-    timestamp,
-    tenant_id).transact()
-w3.eth.waitForTransactionReceipt(tx_hash)
-
-# call isValid on contract
-isValid = greeter.functions.isValid(tenant_id, user_address, timestamp).call()
-
-
-"""
