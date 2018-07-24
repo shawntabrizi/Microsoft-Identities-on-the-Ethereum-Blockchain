@@ -75,6 +75,23 @@ contract IdentityStore is IdentityInterface {
         return true;
     }
 
+    function isValid(address _userAddress, uint256 _minTimestamp) view public returns(bool) {
+
+        // check valid address
+        if(!userAddressExists(_userAddress)) {
+            return false;
+        }
+
+        User memory currentUser = tenantAddressMapping[_userAddress];
+
+        // check minimum timestamp
+        if(currentUser.timestamp < _minTimestamp) {
+            return false;
+        }
+
+        return true;
+    }
+
     function updateHash(
         bytes32 _oldHash, 
         bytes32 _newHash, 
