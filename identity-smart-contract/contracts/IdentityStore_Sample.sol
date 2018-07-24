@@ -99,12 +99,14 @@ contract IdentityStore is Ownable {
         return true;
     }
 
-    function hasAccountExpired(address userAddress, uint256 timestamp ) view public returns(bool) {
+    function hasAccountExpired(address userAddress, uint validDays ) view public returns(bool) {
         require(userAddressExists(userAddress));
         uint256 userTimestamp = tenantAddressMapping[userAddress].timestamp;
-        require(userTimestamp > 0);
+        if(userTimestamp  >= userTimestamp + (validDays * 1 days)) {
+            return false;
+        }
         
-        return false;
+        return true;
     }       
 
     function userTenantHashExists(bytes32 tenantHash) view public returns(bool){
