@@ -19,19 +19,41 @@ contract IdentityStore is Ownable {
         uint256 _timestamp,
         string _tenantId) onlyOwner public {
 
-        require(!userAddressExists(_userAddress));
-        require(!userTenantHashExists(_tenantHash));
+        // Completely new user
+        if (!userAddressExists(_userAddress) && !userTenantHashExists(_tenantHash)) {
+            
+            User memory newUser = User(_tenantHash, _timestamp, _tenantId);
+            tenantAddressMapping[_userAddress] = newUser;
+            tenantHashMapping[_tenantHash] = _userAddress;
+            return;
+        }
 
-        User memory newUser = User(_tenantHash, _timestamp, _tenantId);
+        // Update user hash.
+        if (userAddressExists(_userAddress) && !userTenantHashExists(_tenantHash)) {
+            
+            bytes32 oldHash = tenantAddressMapping[_userAddress].tenantHash;
+            updateHash(oldHash, _tenantHash, _timestamp);
+            return;
+        }
         
-        tenantAddressMapping[_userAddress] = newUser;
-        tenantHashMapping[_tenantHash] = _userAddress;
+        // Update user address.
+        if (userTenantHashExists(_tenantHash) && !userAddressExists(_userAddress)) {
+            address oldAddress = tenantHashMapping[_tenantHash];
+            updateAddress(oldAddress, _userAddress);
+            return;
+        }
+        
+        // Update timestamp
+        if (userTenantHashExists(_tenantHash) && userAddressExists(_userAddress)) {
+            updateTimestamp(_tenantHash, _timestamp);
+            return;
+        }
     }
 
     function updateHash(
         bytes32 _oldHash, 
         bytes32 _newHash, 
-        uint256 _timestamp) onlyOwner public {
+        uint256 _timestamp) private {
 
         require(userTenantHashExists(_oldHash), "Old hash does not exist.");
         require(!userTenantHashExists(_newHash), "New hash is already registered.");
@@ -49,14 +71,44 @@ contract IdentityStore is Ownable {
         tenantHashMapping[_newHash] = currentAddress;
     }
 
-    function updateTimestamp(bytes32 _tenantHash,uint256 _timestamp) onlyOwner public {
+    function updateAddress(address oldUserAddress, address newUserAddress) onlyOwner private {
+        User memory existingUser = tenantAddressMapping[oldUserAddress];
+        
+        require(!userAddressExists(newUserAddress));
+        require(userAddressExists(oldUserAddress));
+
+        tenantHashMapping[existingUser.tenantHash] = newUserAddress;
+        tenantAddressMapping[newUserAddress] = existingUser;
+        delete tenantAddressMapping[oldUserAddress];
+    }
+
+    function updateTimestamp(bytes32 _tenantHash, uint256 _timestamp) onlyOwner private {
         tenantAddressMapping[tenantHashMapping[_tenantHash]].timestamp = _timestamp;
     }
 
     function isValid(
-        bytes32 _tenantHash, 
-        address _userAddress) view public returns(bool) {
-        return tenantHashMapping[_tenantHash] == _userAddress;
+        string _tenantId, 
+        address _userAddress,
+        uint256 _minTimestamp) view public returns(bool) {
+
+        // check valid address
+        if(!userAddressExists(_userAddress)) {
+            return false;
+        }
+
+        User memory currentUser = tenantAddressMapping[_userAddress];
+
+        // check valid tenant id
+        if(keccak256(currentUser.tenantId) != keccak256(_tenantId)) {
+            return false;
+        }
+        
+        // check minimum timestamp
+        if(currentUser.timestamp < _minTimestamp) {
+            return false;
+        }
+
+        return true;
     }
 
     function userAddressExists(address userAddress) view public returns(bool) {       
@@ -82,17 +134,4 @@ contract IdentityStore is Ownable {
         }
         return true;
     }
-
-    function updateAddress (address oldUserAddress, address newUserAddress) public {
-        User memory existingUser = tenantAddressMapping[oldUserAddress];
-        
-        require(!userAddressExists(newUserAddress));
-        require(userAddressExists(oldUserAddress));
-
-        tenantHashMapping[existingUser.tenantHash] = newUserAddress;
-        tenantAddressMapping[newUserAddress] = existingUser;
-        delete tenantAddressMapping[oldUserAddress];
-    }
-
-
 }
