@@ -15,12 +15,16 @@ from eth_account.messages import defunct_hash_message
 
 from requests.auth import HTTPBasicAuth
 from flask import Flask, json, jsonify, request
+from flask_cors import CORS, cross_origin
 from flask_restful import Resource, Api
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
 app = Flask(__name__)
 api = Api(app)
+
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
@@ -72,7 +76,7 @@ def before_request():
         resp.content_type = "application/json"
         return resp
 
-
+@cross_origin()
 @app.route("/signup", methods=['POST'])
 @app.route("/signup/<secret>", methods=['POST']) # for testing to skip certain step, look below
 def validate(secret=None):
