@@ -16,39 +16,11 @@ function decoder(base64url) {
 }
 
 function jwtdecode(jwt_token) {
-    var message, Header, Payload, Signature
+    var tokens = jwt_token.split(".")
+    //var header = decoder(tokens[0])
+    var payload = decoder(tokens[1])
 
-    Header = "{\n}"
-    Payload = "{\n}"
-    Signature = "{\n}"
-
-    if (jwt_token.length < 1) {
-        message = "Use the text area above to input a JSON Web Token, " + "<a href='javascript:;' onclick='sample()'>or use this sample token.</a>"
-    } else {
-        //JSON Web Tokens consist of three parts separated by dots "."
-        //Header, Payload, and Signature
-        //Each of these parts are base-64-url encoded strings with the JSON data
-        var tokens = jwt_token.split(".")
-        if (tokens.length == 3) {
-            message = "Valid Token"
-            Header = decoder(tokens[0])
-            Payload = decoder(tokens[1])
-            if (tokens[2].length > 0) {
-                Signature = "[Signed Token]"
-            } else {
-                Signature = "[Unsigned Token]"
-            }
-        } else {
-            message = "JSON Web Tokens must have 3 sections, even without a signature."
-        }
-    }
-    div_header.innerHTML = Header
-    div_payload.innerHTML = Payload
-    div_signature.innerHTML = Signature
-    p_message.innerHTML = message
-
-    return Payload
-
+    return payload
 }
 
 var div_header = document.getElementById('token_header')
@@ -72,20 +44,4 @@ function parseQueryStrings() {
     }
 
     return queryStrings;
-}
-
-// On load, check if querystrings are present
-window.onload = async function () {
-    // Check for querystrings
-    var queryStrings = parseQueryStrings();
-    // Set address, and run query from first transaction block to current block
-    if (queryStrings['id_token']) {
-        document.getElementById('jwt_raw').innerText = queryStrings['id_token'];
-        var payload = JSON.parse(jwtdecode(queryStrings['id_token']))
-        if (payload['name']) {
-            document.getElementById('name').innerText = payload['name']
-            document.getElementById('sign_in_text').hidden = true
-            document.getElementById('sign_in_button').hidden = true
-        }
-    }
 }

@@ -57,17 +57,3 @@ function set_qr_account(account)
 		text	: account.privateKey
 	});	
 }
-
-$(document).ready( function() {
-	// code in here only runs when the page content is loaded
-	if(jQuery){
-		console.log('adding QR');
-
-		var eth_account = get_eth_account();
-		set_qr_account(eth_account);
-	}
-	else
-	{
-		console.log('failed to load jQuery');
-	}
- });

@@ -2,10 +2,11 @@ window.addEventListener('load', function () {
     if (typeof web3 !== 'undefined') {
         console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)
         window.web3 = new Web3(web3.currentProvider);
+        afterLoad();
     } else {
         console.log('No Web3 Detected... please install Metamask')
         //You need Metamask to provide account info, so Infura won't do!
-        window.web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/<APIKEY>"));
+        //window.web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/<APIKEY>"));
     }
 })
 
@@ -41,3 +42,15 @@ async function final_output() {
     document.getElementById("final_output").innerText = JSON.stringify(output)
 
 }
+
+async function add_address() {
+    var accounts = await web3.eth.getAccounts()
+    document.getElementById("eth_address").innerText = accounts[0]
+}
+
+function afterLoad() {
+    add_address()
+}
+
+var sign_message_button = document.getElementById("sign_message_button")
+sign_message_button.addEventListener("click", sign_token);
