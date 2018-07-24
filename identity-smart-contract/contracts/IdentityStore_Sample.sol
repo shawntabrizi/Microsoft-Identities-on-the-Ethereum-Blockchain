@@ -112,13 +112,14 @@ contract IdentityStore is Ownable {
     }
 
     function userAddressExists(address userAddress) view internal returns(bool) {       
-        if(tenantAddressMapping[userAddress].timestamp == 0) {
+        if(tenantAddressMapping[userAddress].tenantHash == 0) {
             return false;
         }
         return true;
     }
 
     function userTenantHashExists(bytes32 tenantHash) view internal returns(bool){
+        // pray it be who can find the 0X Address
         if(tenantHashMapping[tenantHash] == 0) {
             return false;
         }
