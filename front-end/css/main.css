@@ -1,0 +1,16 @@
+#sign_in_button {
+  color: #fff;
+  background-color: #2F2F2F;
+  border: none;
+}
+
+#sign_in_button:hover {
+  color: #fff;
+  background-color: #2F2F2F !important;
+  border: none !important;
+}
+
+#msLogo {
+  padding-right: 12px;
+  margin-top: -2px;
+}
