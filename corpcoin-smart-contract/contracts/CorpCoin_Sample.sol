@@ -1,11 +1,11 @@
 pragma solidity ^0.4.24;
 
 import "./ERC20.sol";
-import "./../../identity-smart-contract/contracts/IdentityInterface.sol";
+import "./../../identity-smart-contract/contracts/IdentityStore.sol";
 
 contract CorpCoin is EIP20Interface {
     
-    IdentityInterface idStore;
+    IdentityStore idStore;
     uint256 expiration = 30 days;
     uint numberOfCoins = 4;
     uint256 constant private MAX_UINT256 = 2**256 - 1;
@@ -14,7 +14,7 @@ contract CorpCoin is EIP20Interface {
     mapping (address => bool) private coinAllocated;
 
     function CorpCoin(address addr, uint256 _initialAmount) public {
-        idStore = IdentityInterface(addr);
+        idStore = IdentityStore(addr);
         balances[msg.sender] = _initialAmount;
         totalSupply = _initialAmount;
     }
