@@ -21,6 +21,8 @@ wsgi_app = app.wsgi_app
 authErrorNoToken = { "code" : "Missing bearer token."}
 authErrorBadToken = { "code" : "Your token is not valid."}
 authErrorExpiredToken = { "code" : "Your token has expired."}
+authErrorNoBody = { "code" : "Missing payload."}
+invalidJsonInBody = { "code" : "Invalid JSON in body"}
 
 res = requests.get('https://login.microsoftonline.com/common/.well-known/openid-configuration')
 jwk_uri = res.json()['jwks_uri']
@@ -35,56 +37,71 @@ def index():
 @app.before_request
 def before_request():
     
-    print ("before processing: url is: {0}".format(request.url))
+    print ("before processing: url is: {0}".format(request.url), file=sys.stderr)
+    if not request.data:
+        resp = app.make_response(jsonify(authErrorNoBody))
+        resp.status = "401"
+        resp.content_type = "application/json"
+        return resp
+    try:
+        json_string = json.loads(request.data)
+    except ValueError:
+        resp = app.make_response(jsonify(invalidJsonInBody))
+        resp.status = "401"
+        resp.content_type = "application/json"
+        return resp
+
+    access_token = json_string["registration"]["token"]
+    print(access_token)
     
-    if "Authorization" not in request.headers:
+    if not access_token:
         resp = app.make_response(jsonify(authErrorNoToken))
         resp.status = "401"
         resp.content_type = "application/json"
         return resp
-    
-    authHeader = request.headers['Authorization']
-    
-    if authHeader.startswith('Bearer '):
-        access_token = authHeader[7:]
-        token_header = jwt.get_unverified_header(access_token)
-        x5c = None
 
-        # Iterate JWK keys and extract matching x5c chain
-        for key in jwk_keys['keys']:
-            if key['kid'] == token_header['kid']:
-                x5c = key['x5c']
+    token_header = jwt.get_unverified_header(access_token)
+    x5c = None
 
-        print ("x5c is {0}".format(x5c[0]))
+    # Iterate JWK keys and extract matching x5c chain
+    for key in jwk_keys['keys']:
+        if key['kid'] == token_header['kid']:
+            x5c = key['x5c']
 
-        if x5c[0] not in publicKeyMap.keys():
-            cert = ''.join(['-----BEGIN CERTIFICATE-----\n', x5c[0], '\n-----END CERTIFICATE-----\n',])
-            public_key = load_pem_x509_certificate(cert.encode(), default_backend()).public_key()
-            publicKeyMap[x5c[0]] = public_key
-            print ("public key constructed")
-        else:
-            public_key = publicKeyMap[x5c[0]]
-            print ("Cached public key is used")
+    print ("x5c is {0}".format(x5c[0]))
 
-        try:
-            decoded_token = jwt.decode(
-                access_token,
-                public_key,
-                algorithms=token_header['alg'],
-                audience="https://graph.windows.net")
-        except jwt.exceptions.ExpiredSignatureError:
-            resp = app.make_response(jsonify(authErrorExpiredToken))
-            resp.status = "401"
-            resp.content_type = "application/json"
-            return resp
-        except:
-            resp = app.make_response(jsonify(authErrorBadToken))
-            resp.status = "401"
-            resp.content_type = "application/json"
-            return resp
+    if x5c[0] not in publicKeyMap.keys():
+        cert = ''.join(['-----BEGIN CERTIFICATE-----\n', x5c[0], '\n-----END CERTIFICATE-----\n',])
+        public_key = load_pem_x509_certificate(cert.encode(), default_backend()).public_key()
+        publicKeyMap[x5c[0]] = public_key
+        print ("public key constructed")
+    else:
+        public_key = publicKeyMap[x5c[0]]
+        print ("Cached public key is used")
 
-        print (decoded_token)
+    try:
+        decoded_token = jwt.decode(
+            access_token,
+            public_key,
+            algorithms=token_header['alg'],
+            audience="79d908c3-6cc1-40c6-bbf1-9f7140e927fb")
+    except jwt.exceptions.ExpiredSignatureError:
+        print("expired signature")
+        resp = app.make_response(jsonify(authErrorExpiredToken))
+        resp.status = "401"
+        resp.content_type = "application/json"
+        return resp
+    except:
+        resp = app.make_response(jsonify(authErrorBadToken))
+        print("bad token")
+        resp.status = "401"
+        resp.content_type = "application/json"
+        return resp
 
+    print (decoded_token)
+    resp = app.make_response("success")
+    resp.status = "200"
+    return resp
 
 todos = {
     '1' : 'first_todo',
