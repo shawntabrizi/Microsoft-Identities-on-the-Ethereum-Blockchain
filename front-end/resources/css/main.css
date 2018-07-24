@@ -1,14 +1,8 @@
-#sign_in_button {
-  color: #fff;
-  background-color: #2F2F2F;
-  border: none;
-  margin-top: 20px;
-}
-
-#sign_in_button:hover {
+.btn-primary.signin-button,.btn-primary.signin-button:hover, .btn-primary.signin-button:active {
   color: #fff;
   background-color: #2F2F2F !important;
-  border: none !important;
+  border: none;
+  margin-top: 20px;
 }
 
 #msLogo {

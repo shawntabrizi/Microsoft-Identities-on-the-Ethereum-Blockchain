@@ -6,6 +6,7 @@ import requests
 import jwt
 import cryptography
 import hashlib
+import sha3
 
 from deploy_contract import deploy
 
@@ -170,8 +171,10 @@ def validate(secret=None):
     print(userObjectId)
     print(address)
     print(issuedAtTicks)
-    userHash = hashlib.sha256((tenantId + "_" + userObjectId).encode()).hexdigest()
+    userHash = sha3.sha3_256((tenantId + "_" + userObjectId).encode('utf-8')).hexdigest()
     print("hash: " + userHash)
+
+    # setTenant(contract, )
 
     resp = app.make_response("success")
     resp.status = "200"
