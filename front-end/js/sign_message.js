@@ -13,14 +13,14 @@ window.addEventListener('load', function () {
 async function sign_message(message) {
     var accounts = await web3.eth.getAccounts()
     var hash = web3.eth.accounts.hashMessage(message)
-    var signed_message = web3.eth.personal.sign(hash, accounts[0])
-    return signed_message
+    var signature = web3.eth.personal.sign(hash, accounts[0])
+    return signature
 }
 
 async function sign_token() {
     //var jwt_raw = document.getElementById("jwt_raw").innerText
-    //var signed_message = await sign_message(jwt_raw)
-    //document.getElementById("eth_signature").innerText = signed_message
+    //var signature = await sign_message(jwt_raw)
+    //document.getElementById("eth_signature").innerText = signature
     final_output()
 }
 
