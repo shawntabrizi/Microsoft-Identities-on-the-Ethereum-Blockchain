@@ -1,4 +1,4 @@
-var Identity = artifacts.require("IdentityStore");
+var Identity = artifacts.require("IdentityStoreInherit");
 
 contract('Identity', function(accounts) {
   
@@ -12,7 +12,7 @@ contract('Identity', function(accounts) {
 
             instance.setTenant(tenantHash, address, timestamp, tenantId);
 
-            return instance.userAddressExists.call(address);
+            return instance.userAddressExistsPublic.call(address);
 
         }).then(function(result) {
             assert.equal(result, true);
@@ -32,9 +32,9 @@ contract('Identity', function(accounts) {
             var tenantId = "tenantID";
 
             instance.setTenant(tenantHash, address1, timestamp, tenantId);
-            instance.updateAddress(address1, address2);
+            instance.updateAddressPublic(address1, address2);
 
-            return instance.userAddressExists.call(address1);
+            return instance.userAddressExistsPublic.call(address1);
 
         }).then(function(result) {
             assert.equal(result, false);
@@ -54,9 +54,9 @@ contract('Identity', function(accounts) {
             var tenantId = "tenantID";
 
             instance.setTenant(tenantHash, address1, timestamp, tenantId);
-            instance.updateAddress(address1, address2);
+            instance.updateAddressPublic(address1, address2);
 
-            return instance.userAddressExists.call(address2);
+            return instance.userAddressExistsPublic.call(address2);
 
         }).then(function(result) {
             assert.equal(result, true);
@@ -77,10 +77,10 @@ contract('User hash test', async () => {
        var tenantId = "tenantID";
 
        await instance.setTenant(tenantHash, address, timestamp, tenantId);
-       await instance.updateHash(tenantHash, newTenantHash, 1234);
+       await instance.updateHashPublic(tenantHash, newTenantHash, 1234);
 
-       var updated = await instance.userTenantHashExists.call(newTenantHash);
-       var removed = await instance.userTenantHashExists.call(tenantHash);
+       var updated = await instance.userTenantHashExistsPublic.call(newTenantHash);
+       var removed = await instance.userTenantHashExistsPublic.call(tenantHash);
        assert(updated);
        assert(!removed);
     });
@@ -97,7 +97,7 @@ contract('User hash test 2', async () => {
 
        var threwException = false
        try {
-        await instance.updateHash(tenantHash, newTenantHash, 1234);
+        await instance.updateHashPublic(tenantHash, newTenantHash, 1234);
        } catch (error) {
            threwException = true;
        }
@@ -123,7 +123,7 @@ contract('User hash test 3', async () => {
 
        var threwException = false
        try {
-        await instance.updateHash(tenantHash, newTenantHash, 1234);
+        await instance.updateHashPublic(tenantHash, newTenantHash, 1234);
        } catch (error) {
            threwException = true;
        }

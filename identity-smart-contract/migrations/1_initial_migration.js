@@ -3,6 +3,7 @@ const TruffleConfig = require('../truffle');
 
 var Migrations = artifacts.require("./Migrations.sol");
 var Identity = artifacts.require("IdentityStore");
+var IdentityStoreInherit = artifacts.require("IdentityStoreInherit");
 
 module.exports = function(deployer, network) {
   // const config = TruffleConfig.networks[network];
@@ -14,7 +15,7 @@ module.exports = function(deployer, network) {
   // }
 
   deployer.deploy(Migrations);
-
+  deployer.deploy(IdentityStoreInherit)
   deployer.deploy(Identity)
     .then(() => console.log(Identity.address));
 };
