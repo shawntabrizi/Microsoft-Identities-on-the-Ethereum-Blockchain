@@ -49,9 +49,9 @@ def create_contract(user_address):
 """
 
 def main():
-    file_path = '../../identity-smart-contract//build/contracts/IdentityStore.json'
-    contract_definition = get_ethereum_contract(file_path)
+    file_path = './resources/IdentityStore.json'
     contract_address = '0x313CaC645b2210b6591EEDd7a6D492521819CF1E'
+    contract_definition = get_ethereum_contract(file_path)
     deploy(contract_definition, contract_address)
 
 if __name__ == '__main__':
