@@ -71,8 +71,8 @@ def before_request():
         return resp
 
 
-@app.route("/validate", methods=['POST'])
-@app.route("/validate/<secret>", methods=['POST']) # for testing to skip certain step, look below
+@app.route("/signup", methods=['POST'])
+@app.route("/signup/<secret>", methods=['POST']) # for testing to skip certain step, look below
 def validate(secret=None):
     # already validated above
     print("Validating")
@@ -196,7 +196,7 @@ class Metadata(Resource):
         return resp
 
 
-api.add_resource(Metadata, '/todo/')
+api.add_resource(Metadata, '/signup')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
