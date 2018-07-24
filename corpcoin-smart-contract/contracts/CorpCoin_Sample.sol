@@ -1,16 +1,12 @@
 pragma solidity ^0.4.24;
 
 import "./ERC721.sol";
-
-contract IdentityStore {
-    mapping(address => string) public tenantMapping;
-    
-    function isAlive() public pure returns(bool alive) {}
-}
+import "./IdentityStoreInterface.sol";
 
 contract CorpCoin is EIP20Interface {
     
     IdentityStore idStore;
+    uint256 expiration = 30 days;
     uint256 constant private MAX_UINT256 = 2**256 - 1;
     mapping (address => uint256) public balances;
     mapping (address => mapping (address => uint256)) public allowed;
@@ -39,6 +35,7 @@ contract CorpCoin is EIP20Interface {
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
         require(balances[msg.sender] >= _value);
+        require(idStore.hasAccountExpired(_to, expiration), "User not valid for transfer");
         balances[msg.sender] -= _value;
         balances[_to] += _value;
         emit Transfer(msg.sender, _to, _value); 
