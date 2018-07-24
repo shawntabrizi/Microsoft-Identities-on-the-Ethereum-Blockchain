@@ -22,6 +22,7 @@
 .success-message {
   font-size: 20px;
   margin-bottom: 60px;
+  display: inline;
 }
 
 .btn-primary {
@@ -42,5 +43,13 @@
 
 #create_new_button {
   margin-bottom: 60px;
+}
+
+.welcome-message h3.section-subheading{
+  margin-bottom: 50px;
+}
+
+#qrcodeAccount {
+  margin-top: 20px;
 }
 
