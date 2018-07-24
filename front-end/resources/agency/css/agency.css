@@ -171,7 +171,7 @@ img::-moz-selection {
 
 header.masthead {
   color: white;
-  background-image: url("../../img/nasa-unsplash.jpg");
+  background-image: url("../../img/abstract-art-artistic.jpg");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
@@ -184,21 +184,21 @@ header.masthead {
 header.masthead .intro-text {
   padding-top: 150px;
   padding-bottom: 100px;
-  margin-left: 380px
+  margin-left: 500px
 }
 
 header.masthead .intro-text .intro-lead-in {
-  font-size: 50px;
+  font-size: 42px;
   font-weight: 700;
   line-height: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 60px;
   font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 header.masthead .intro-text .intro-heading {
   font-size: 22px;
   line-height: 22px;
-  margin-bottom: 50px;
+  margin-bottom: 60px;
   font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,arial,sans-serif;
 }
 
@@ -208,14 +208,14 @@ header.masthead .intro-text .intro-heading {
     padding-bottom: 200px;
   }
   header.masthead .intro-text .intro-lead-in {
-    font-size: 50px;
+    font-size: 42px;
     font-weight: 700;
-    line-height: 75px;
+    line-height: 65px;
     margin-bottom: 25px;
     font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
   header.masthead .intro-text .intro-heading {
-    font-size: 40px;
+    font-size: 36px;
     line-height: 40px;
     margin-bottom: 50px;
     font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,arial,sans-serif;
