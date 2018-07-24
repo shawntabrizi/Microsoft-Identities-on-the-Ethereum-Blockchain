@@ -12,11 +12,9 @@ def get_ethereum_contract(file_path):
     
     return contract
 
-file_path = '../../identity-smart-contract//build/contracts/IdentityStore.json'
-contract_def = get_ethereum_contract(file_path)
-
-CONTRACT_BYTECODE = contract_def['bytecode'] 
-CONTRACT_ABI = contract_def['abi']
+contract_dict = json.loads(IDENTITY_STORE_JSON)
+CONTRACT_BYTECODE = contract_dict['bytecode'] 
+CONTRACT_ABI = contract_dict['abi']
 
 def create_contract(user_address): 
     w3 = Web3(HTTPProvider("https://ropsten.infura.io/v3/380500510ecf4d9cbac74fdf566c9065"))
