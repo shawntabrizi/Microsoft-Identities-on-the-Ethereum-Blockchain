@@ -22,7 +22,6 @@ async function sign_message(messageJson) {
 }
 
 async function sign_with_metamask() {
-    console.log("hi");
     var accounts = await web3.eth.getAccounts()
     final_output(accounts)
 }
@@ -35,6 +34,6 @@ async function final_output(accounts,) {
     output.registration.options.claims = ["tid"]
     output.registration.token = window.jwt_token
     output.signature = await sign_message(output.registration)
-    
+    load_loading_ux()
     send_payload(output)
 }
