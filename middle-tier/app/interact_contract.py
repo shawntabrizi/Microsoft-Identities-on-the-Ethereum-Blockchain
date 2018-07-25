@@ -14,7 +14,6 @@ CONTRACT_ADDRESS = environ.get('CONTRACT_ADDRESS')
 
 NETWORK_ENDPOINT = "https://ropsten.infura.io/v3/{}".format(API_KEY)
 
-
 w3 = Web3(HTTPProvider(NETWORK_ENDPOINT))
 w3.eth.enable_unaudited_features()
 

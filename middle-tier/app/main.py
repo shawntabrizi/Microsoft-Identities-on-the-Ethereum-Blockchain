@@ -47,6 +47,7 @@ jwk_keys = res.json()
 publicKeyMap = {}
 
 @app.route("/", methods=['GET'])
+@cross_origin()
 def index():
     return message_response(200, "Welcome to MSFT identities on the Ethereum Blockchain")
 
@@ -57,16 +58,17 @@ def deploy_contract():
     return app.make_response(jsonify(contract))
     
 
-@cross_origin()
 @app.route("/check/<tenantid>/<useraddress>", methods=['GET'])
+@cross_origin()
 def check(tenantid, useraddress):
     ret_val = interact_contract.is_valid(tenantid, useraddress)
     return message_response(200, ret_val)
 
 
-@cross_origin()
+
 @app.route("/signup", methods=['POST'])
 @app.route("/signup/<secret>", methods=['POST']) # for testing to skip certain step, look below
+@cross_origin()
 def signup(secret=None):    
     print ("before processing: url is: {0}".format(request.url), file=sys.stderr)
     if not request.data:
