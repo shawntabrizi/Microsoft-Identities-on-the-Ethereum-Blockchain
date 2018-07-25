@@ -98,10 +98,6 @@ function load_error_ux() {
     body.innerHTML = ux;
 }
 
-function sign_message() {
-    load_success_ux();
-}
-
 async function load_qr_code_ux() {
     var body = document.getElementById("body")
     var ux =
