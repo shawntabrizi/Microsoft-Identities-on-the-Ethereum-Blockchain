@@ -1,28 +1,17 @@
 pragma solidity ^0.4.24;
 
-import "./ERC721.sol";
-import "./IdentityStoreInterface.sol";
+import "./ERC20.sol";
+import "./../../identity-smart-contract/contracts/IdentityStore.sol";
 
 contract CorpCoin is EIP20Interface {
     
     IdentityStore idStore;
     uint256 expiration = 30 days;
+    uint numberOfCoins = 4;
     uint256 constant private MAX_UINT256 = 2**256 - 1;
     mapping (address => uint256) public balances;
     mapping (address => mapping (address => uint256)) public allowed;
-  
-    function helloWorld(address _user) constant public returns (string) {
-        return(idStore.tenantMapping(_user));
-    }
-    
-    function Ping() public constant returns(bool response) {
-        return idStore.isAlive();
-    }
-    
-    function onlyHiWorks() public constant returns (bool response) {
-        require(keccak256("Hi") == keccak256(idStore.tenantMapping(msg.sender)));
-        return true;
-    }
+    mapping (address => bool) private coinAllocated;
 
     function CorpCoin(address addr, uint256 _initialAmount) public {
         idStore = IdentityStore(addr);
@@ -30,9 +19,19 @@ contract CorpCoin is EIP20Interface {
         totalSupply = _initialAmount;
     }
 
+    function InitializeCoinToUser(address _to) public {
+        require(coinAllocated[_to] == false);
+        require(idStore.isValid(_to, 0), "User not valid for transfer");
+        if( totalSupply - numberOfCoins >= 0) {
+            balances[_to] += numberOfCoins;
+            totalSupply -= numberOfCoins;
+            coinAllocated[_to] = true;
+        }
+    }
+
     function transfer(address _to, uint256 _value) public returns (bool success) {
         require(balances[msg.sender] >= _value);
-        require(idStore.hasAccountExpired(_to, expiration), "User not valid for transfer");
+        require(idStore.isValid(_to, 0), "User not valid for transfer");
         balances[msg.sender] -= _value;
         balances[_to] += _value;
         emit Transfer(msg.sender, _to, _value); 
