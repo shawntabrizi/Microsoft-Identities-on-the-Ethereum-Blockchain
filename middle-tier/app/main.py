@@ -20,6 +20,8 @@ from flask_restful import Resource, Api
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
+from deploy_contract import create_contract
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -51,16 +53,25 @@ def index():
 
 @app.route("/deploy", methods=['POST'])
 def deploy_contract():
-    contract_definition = json.loads(request.data)
-    contract_address = '0x313CaC645b2210b6591EEDd7a6D492521819CF1E'
-    contract = deploy(contract_definition, contract_address)
+
+    contract = create_contract(contract_definition, contract_address)
     print('contract:{0}'.format(contract))
     return app.make_response(jsonify(contract))
     
 
-@app.before_request
-def before_request():
-    
+@cross_origin()
+@app.route("/check/<tenantid>/<useraddress>", methods=['GET'])
+def check(tenantid, useraddress):
+    ret_val = interact_contract.is_valid(tenantid, useraddress)
+    resp = app.make_response(jsonify(ret_val))
+    resp.status = "200"
+    resp.content_type = "application/json"
+    return resp
+
+@cross_origin()
+@app.route("/signup", methods=['POST'])
+@app.route("/signup/<secret>", methods=['POST']) # for testing to skip certain step, look below
+def signup(secret=None):    
     print ("before processing: url is: {0}".format(request.url), file=sys.stderr)
     if not request.data:
         resp = app.make_response(jsonify(authErrorNoBody))
@@ -75,12 +86,7 @@ def before_request():
         resp.status = "401"
         resp.content_type = "application/json"
         return resp
-
-@cross_origin()
-@app.route("/signup", methods=['POST'])
-@app.route("/signup/<secret>", methods=['POST']) # for testing to skip certain step, look below
-def validate(secret=None):
-    # already validated above
+        
     print("Validating")
     json_string = json.loads(request.data)
     registrationReq = json_string["registration"]

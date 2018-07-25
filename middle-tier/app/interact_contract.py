@@ -62,3 +62,10 @@ def get_deloyed_contract(contract_definition, contract_address):
 def load_contract():
     contract_definition = get_ethereum_contract(CONTRACT_FILE_PATH) 
     return get_deloyed_contract(contract_definition, CONTRACT_ADDRESS)
+
+def is_valid(tenant_id, user_address):
+    contract = load_contract()
+    timestamp = int(time.time())
+    # call isValid on contract
+    isValid = contract.functions.isValid(tenant_id, user_address, timestamp).call()
+    return isValid
