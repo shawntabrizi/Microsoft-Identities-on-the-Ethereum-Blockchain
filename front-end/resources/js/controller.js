@@ -112,11 +112,7 @@ async function load_qr_code_ux() {
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center status-message success-message">
-                        <span class="fa-stack fa-2x status-icon success">
-                            <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fa fa-check fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <h2 class="section-subheading status-message">Successfully created your Ethereum account!</h2>
+                        <h2 class="section-subheading status-message">We've generated an Ethereum account for you:</h2>
                     </div>
                 </div>
                 <div class="row">
@@ -127,6 +123,8 @@ async function load_qr_code_ux() {
                 </div>
 
                 <div class="text-center" id="qrcodeAccount"></div>
+                <div class="text-center" id="address"></div>
+                <div class="text-center" id="private_key"></div>
             </div>
         </section>
         <section class="bg-light small-section">
