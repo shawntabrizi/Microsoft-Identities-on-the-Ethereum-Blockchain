@@ -172,6 +172,7 @@ img::-moz-selection {
 header.masthead {
   color: white;
   background-image: url("../../img/abstract-art-artistic.jpg");
+  background-color: #000;
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
