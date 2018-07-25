@@ -27,7 +27,7 @@
 .status-message {
   font-size: 1.2rem;
   display: inline-block;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .btn-primary {
@@ -89,6 +89,21 @@ section h3.small-section-subheading {
   margin-right: 8px;
 }
 
-.btn-primary i.fa {
+.btn-primary i.fa, .account .small-section-heading i {
   margin-left: 6px;
+}
+
+.account-details {
+  font-family: monospace;
+  margin-top: 30px;
+  border-radius: 9px;
+  padding: 10px 15px;
+}
+
+.account-details div {
+  display: inline-block;
+}
+
+.account .small-section-heading {
+  display: inline-block;
 }

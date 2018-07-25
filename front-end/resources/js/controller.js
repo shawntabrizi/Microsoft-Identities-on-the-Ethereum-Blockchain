@@ -126,20 +126,19 @@ async function load_qr_code_ux() {
         <section class="top-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12 text-center status-message success-message">
+                    <div class="col-7 text-center small-section account">
                         <h2 class="section-subheading status-message">We've generated an Ethereum account for you:</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2 class="small-section-heading">Here's your private key</h2>
+                        <h2 class="small-section-heading">Here's your private key <i class="fa fa-arrow-right"></i></h2>
                         <h3 class="section-subheading small-section-subheading text-muted">Take a photo of it and keep it safe.</h3>
+                        <div class="account-details bg-light">
+                            <div class="row">Address: <div class="text-center" id="address"></div></div>
+                            <div class="row">Private key: <div class="text-center" id="private_key"></div></div>
+                        </div>
+                    </div>
+                    <div class="col-5 text-center">
+                        <div class="text-center" id="qrcodeAccount"></div>
                     </div>
                 </div>
-
-                <div class="text-center" id="qrcodeAccount"></div>
-                <div class="text-center" id="address"></div>
-                <div class="text-center" id="private_key"></div>
             </div>
         </section>
         <section class="bg-light small-section">
