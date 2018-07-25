@@ -1,0 +1,17 @@
+To Run: 
+truffle compile
+truffle migrate  (genache need to be running at this time)
+npm run start
+
+
+
+
+Steps for if it is needed to re-deploy contract on blockchain
+The way we use in truffle.js is using Infura API (which is a handy service that allow us to deploy like Geth but without having actual geth and a full synced node)
+First get a passphrase of the wallet account (the one for deploy) (We will secretly share the wallet secret phrase offline (NEVER PUSH PASSPHRASE to git/public domain))
+Under truffle.js modify the variable passphrase from <secret passphrase of the deployment wallet> to proper passphrases (ex: betray apple car newyork ...)
+Run truffle compile
+Run truffle migrate --network rinkeby (Make sure the wallet you use in step 3. has enough Eth to deploy the contract, otherwise it will fail)
+Wait the process to complete.
+To verify the deployment of the contract in build/contracts/<target contract> (Same as the teacher's instructions) that "networks" has proper values set in (address, txn hashes, network ids ...etc)
+Done
