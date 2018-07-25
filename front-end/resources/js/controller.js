@@ -10,8 +10,11 @@ window.onload = async function () {
         window.jwt_token = queryStrings['id_token']
         var payload = JSON.parse(jwtdecode(queryStrings['id_token']))
         console.log(payload);
-
-        load_eth_create_ux();
+        if (global_accounts == null) {
+            load_eth_create_ux();
+        } else {
+            await load_qr_code_ux();
+        }
 
         if (payload['name']) {
             document.getElementById('name').innerText = payload['name']
@@ -158,5 +161,5 @@ async function load_qr_code_ux() {
         `
     body.innerHTML = ux;
 
-    await set_qr_account(get_eth_account());
+    await set_qr_account();
 }

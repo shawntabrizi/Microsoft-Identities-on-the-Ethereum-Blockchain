@@ -1,15 +1,16 @@
 var global_accounts = null;
 
-function get_eth_account()
+async function get_eth_account()
 {
 	console.log("creating account");
-	var account = web3.eth.accounts.create();
+	var account = await web3.eth.accounts.create();
 	global_accounts = account;
 	return account;
 }
 
-function set_qr_account(account)
+async function set_qr_account()
 {
+	var account = await get_eth_account();
 	jQuery('#qrcodeAccount').qrcode({
 		text	: account.privateKey.slice(2)
 	});	
