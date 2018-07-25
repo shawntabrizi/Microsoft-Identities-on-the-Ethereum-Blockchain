@@ -9,7 +9,8 @@ async function send_payload(payload) {
     },
     body: JSON.stringify(payload)
   })
-    .then(function() {
+    .then(function(result) {
+      console.log(result)
       load_success_ux();
     }).catch(function() {
       load_error_ux();

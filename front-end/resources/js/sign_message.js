@@ -5,35 +5,38 @@ window.addEventListener('load', function () {
     } else {
         console.log('No Web3 Detected... please install Metamask')
         //You need Metamask to provide account info, so Infura won't do!
-        window.web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/<APIKEY>"));
+        window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/<APIKEY>"));
     }
 })
 
-async function sign_message(messageJson) {
+async function create_signature(messageJson, accounts) {
     var message = JSON.stringify(messageJson)
-    var accounts = await web3.eth.getAccounts()
     var hex = ''
     for(var i=0;i<message.length;i++) {
         hex += ''+message.charCodeAt(i).toString(16)
     }
     var hexMessage = "0x" + hex
-    var signed_message = web3.eth.personal.sign(hexMessage, accounts[0])
-    return signed_message
+    var signature = web3.eth.personal.sign(hexMessage, accounts[0])
+    return signature
 }
 
-async function sign_with_metamask() {
-    var accounts = await web3.eth.getAccounts()
-    final_output(accounts)
-}
-
-async function final_output(accounts,) {
+async function sign_message(accounts) {
+    var accounts
+    if (global_accounts != null) {
+        accounts = [global_accounts]
+    } else {
+        console.log("hi")
+        accounts = await web3.eth.getAccounts()
+        console.log(accounts)
+    }
     var output = {}
     output.registration = {}
     output.registration.address = accounts[0]
     output.registration.options = {}
     output.registration.options.claims = ["tid"]
     output.registration.token = window.jwt_token
-    output.signature = await sign_message(output.registration)
+    console.log(output)
+    output.signature = await create_signature(output.registration, accounts)
     load_loading_ux()
     send_payload(output)
 }
