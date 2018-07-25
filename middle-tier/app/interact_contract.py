@@ -44,8 +44,7 @@ def setTenant(hashObject, address, timestamp, tenantId):
     txn_hash = w3.eth.sendRawTransaction(signed.rawTransaction)
     txn = w3.eth.getTransaction(txn_hash)
 
-    print('Contract Transaction Hash {}'.format(txn_hash))
-    print('Transaction {}'.format(txn))
+    return txn
 
 def get_deloyed_contract(contract_definition, contract_address): 
     contract_abi = contract_definition['abi']

@@ -7,6 +7,7 @@ import jwt
 import cryptography
 import hashlib
 import sha3
+import json
 
 import interact_contract
 
@@ -155,9 +156,12 @@ def signup(secret=None):
     userHash = sha3.sha3_256((tenantId + "_" + userObjectId).encode('utf-8')).hexdigest()
     print("hash: " + userHash)
 
-    interact_contract.setTenant(userHash, address, issuedAtTicks, tenantId)
+    txn = interact_contract.setTenant(userHash, address, issuedAtTicks, tenantId)
+    
+    hexdecimal = "".join(["{:02X}".format(b) for b in txn['hash']])
+    txHash = "0x{}".format(hexdecimal)
 
-    return message_response(200, "success")
+    return message_response(200, {'transactionHash': txHash})
 
 
 def message_response(status_code, message):
@@ -182,7 +186,7 @@ def verify_address(registrationReq, signature):
 class Metadata(Resource):
     
     def get(self):
-        resp = app.make_response(jsonify(sampleResponse))
+        resp = app.make_response(jsonify(''))
         resp.headers['Access-Control-Allow-Origin'] = '*'
         return resp
 
