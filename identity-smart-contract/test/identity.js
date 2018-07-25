@@ -65,6 +65,24 @@ contract('Identity', function(accounts) {
     
 });
 
+contract('Get User tenant id', async () => {
+
+    it("should return the user tenant id", async () => {
+       let instance = await Identity.deployed();
+       
+       var tenantHash = web3.sha3('tenantId!');
+       var address = "0x47635c238f8af460e37e772387364ddd86c43a61";
+       var timestamp = 123123123;
+       var tenantId = "tenantID";
+
+       await instance.setTenant(tenantHash, address, timestamp, tenantId);
+
+       var tenantIdResult = await instance.getUserTenantId.call(address);
+       assert.equal(tenantIdResult, tenantId);
+    });
+    
+});
+
 contract('User hash test', async () => {
 
     it("should update correctly", async () => {
