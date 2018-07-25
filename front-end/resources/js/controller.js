@@ -10,11 +10,15 @@ window.onload = async function () {
         window.jwt_token = queryStrings['id_token']
         var payload = JSON.parse(jwtdecode(queryStrings['id_token']))
         console.log(payload);
+        
+        //We should add this back later to handle the same QR code being shown, but not working right now
+        /*
         if (global_accounts == null) {
             load_eth_create_ux();
         } else {
             await load_qr_code_ux();
         }
+        */
 
         if (payload['name']) {
             document.getElementById('name').innerText = payload['name']
