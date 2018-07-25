@@ -10,6 +10,8 @@ class Home extends Component {
   constructor(props, context) {
     super(props)
     this.contracts = context.drizzle.contracts;
+    console.log(this.contracts["DMB"].methods);
+    this.dataKey = this.contracts["DMB"].methods["erc721TokenId"].cacheCall();
   }
 
   createPostTable = () => {
@@ -39,7 +41,20 @@ class Home extends Component {
 
   render() {
     //Get total number of the posts
+    // var displayData = 0;
+    // if(!this.contracts.DMB.initialized) {
+    //   displayData = -1;
 
+    // } else 
+    // // If the cache key we received earlier isn't in the store yet; the initial value is still being fetched.
+    // if(!(this.dataKey in this.contracts.DMB["erc721TokenId"])) {
+    //   displayData = -2;
+
+    // }else{ 
+    //   displayData = this.contracts.DMB.erc721TokenId[this.dataKey].value
+    // }
+
+    // console.log(displayData);
     this.contracts.DMB.methods.erc721TokenId().call().then(function(num){
         totalPosts = num;
     });

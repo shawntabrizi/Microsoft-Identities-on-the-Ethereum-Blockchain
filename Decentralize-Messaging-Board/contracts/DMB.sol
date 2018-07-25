@@ -52,7 +52,8 @@ contract DMB is ERC721Token ("DecentralizeMessagingBoard", "DMB") {
     }
 
     function getPostAuthorAffiliation(uint256 tokenId) public view returns(string){
-        return tenantIdAffiliation[tokenId];
+        uint256 tenantId = getTokenTenantId(tokenId);
+        return tenantIdAffiliation[tenantId];
     }
 
 }
