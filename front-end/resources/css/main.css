@@ -107,3 +107,15 @@ section h3.small-section-subheading {
 .account .small-section-heading {
   display: inline-block;
 }
+
+.steps, .getting-started .section-heading {
+  margin-top: 20px;
+}
+
+.steps li {
+  padding: 10px 20px;
+}
+
+#team .section-heading {
+  margin-bottom: 30px;
+}
