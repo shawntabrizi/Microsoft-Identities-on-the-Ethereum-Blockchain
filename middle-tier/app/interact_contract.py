@@ -6,11 +6,11 @@ import sha3
 from os import environ
 from web3 import Web3, HTTPProvider
 from web3.contract import ConciseContract
+from contract import IDENTITY_STORE_JSON
 
 API_KEY = environ.get('API_KEY')  
 PRIVATE_KEY = environ.get('PRIVATE_KEY')
 CONTRACT_ADDRESS = environ.get('CONTRACT_ADDRESS')
-CONTRACT_FILE_PATH = './resources/IdentityStore.json'
 
 NETWORK_ENDPOINT = "https://ropsten.infura.io/v3/{}".format(API_KEY)
 
@@ -48,19 +48,13 @@ def setTenant(hashObject, address, timestamp, tenantId):
     print('Contract Transaction Hash {}'.format(txn_hash))
     print('Transaction {}'.format(txn))
 
-def get_ethereum_contract(file_path='./resources/IdentityStore.json'):
-    contract_file = open(file_path, 'r')
-    contract = json.load(contract_file)
-    
-    return contract
-
 def get_deloyed_contract(contract_definition, contract_address): 
     contract_abi = contract_definition['abi']
     contract = w3.eth.contract(abi=contract_abi, address=contract_address)
     return contract
 
 def load_contract():
-    contract_definition = get_ethereum_contract(CONTRACT_FILE_PATH) 
+    contract_definition = json.loads(IDENTITY_STORE_JSON)
     return get_deloyed_contract(contract_definition, CONTRACT_ADDRESS)
 
 def is_valid(tenant_id, user_address):
