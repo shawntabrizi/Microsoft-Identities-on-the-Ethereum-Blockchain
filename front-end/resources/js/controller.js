@@ -1,3 +1,5 @@
+window.jwt_token
+
 // On load, check if user is signed in
 window.onload = async function () {
     // Check for querystrings
@@ -5,6 +7,7 @@ window.onload = async function () {
     // Set address, and run query from first transaction block to current block
     if (queryStrings['id_token']) {
         console.log(queryStrings['id_token']);
+        window.jwt_token = queryStrings['id_token']
         var payload = JSON.parse(jwtdecode(queryStrings['id_token']))
         console.log(payload);
 
@@ -28,13 +31,13 @@ function load_eth_create_ux() {
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <a class="btn btn-primary btn-xl" id="create_new_button" onclick="load_qr_code_ux()">Create your Ethereum account</a>
+                    <a class="btn btn-primary btn-xl" onclick="load_qr_code_ux()">Create your Ethereum account</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <p>Already have an Ethereum account?</p>
-                    <a class="btn btn-secondary btn-xl" role="button" id="existing_account_button">
+                    <a class="btn btn-secondary btn-xl" onclick="sign_with_metamask()">
                         Sign in with an existing account
                     </a>
                 </div>
