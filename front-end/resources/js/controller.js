@@ -81,9 +81,10 @@ function load_success_ux() {
                     <div class="col-lg-12 text-center status-message success-message">
                         <span class="fa-stack fa-3x status-icon success">
                             <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                            <i class="fa fa-check fa-stack-1x fa-inverse"></i> 
                         </span>
                         <h2 class="section-subheading success-message">Successully signed the message!</h2>
+                        <!-- <a href="https://ropsten.etherscan.io/tx/">View this transaction on the blockchain</href> -->
                     </div>
                 </div>
             </div>
