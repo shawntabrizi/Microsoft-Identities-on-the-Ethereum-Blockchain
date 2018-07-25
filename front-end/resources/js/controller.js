@@ -45,7 +45,7 @@ function load_eth_create_ux() {
                 <div class="col-lg-12 text-center">
                     <p class="text-muted">Already have an Ethereum account?</p>
                     <a class="btn btn-secondary btn-xl" onclick="sign_with_metamask()">
-                    <img src="../resources/img/metamask_icon.png" height="42">   Sign in with MetaMask
+                    <img src="../resources/img/metamask_icon.png" height="32">   Sign in with MetaMask
                     </a>
                 </div>
             </div>
