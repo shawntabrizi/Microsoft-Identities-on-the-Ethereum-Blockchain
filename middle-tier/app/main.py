@@ -48,7 +48,6 @@ publicKeyMap = {}
 
 @app.route("/", methods=['GET'])
 def index():
-    validate(None)
     return "Welcome to MSFT identities on the Ethereum Blockchain"
 
 @app.route("/deploy", methods=['POST'])
