@@ -31,7 +31,7 @@ function load_eth_create_ux() {
                     <div class="col-lg-12 text-center welcome-message">
                         <h2 class="section-heading text-uppercase">Hi <span id="name">there</span>!</h2>
                         <h3 class="section-subheading text-muted">
-                            Let's tie your account to an Ethereum address.  
+                            Let's tie your Microsoft account to an Ethereum address.  
                         </h3>
                     </div>
                     <div class="col-lg-12 text-center">
@@ -45,7 +45,7 @@ function load_eth_create_ux() {
                 <div class="col-lg-12 text-center">
                     <p class="text-muted">Already have an Ethereum account?</p>
                     <a class="btn btn-secondary btn-xl" onclick="sign_with_metamask()">
-                        Sign in with an existing account
+                    <img src="../resources/img/metamask_icon.png" height="42">   Sign in with MetaMask
                     </a>
                 </div>
             </div>
@@ -133,9 +133,9 @@ async function load_qr_code_ux() {
             <div class="container>
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <h2 class="small-section-heading">Now let's sign a message</h2>
+                        <h2 class="small-section-heading">Now let's add your company to the blockchain</h2>
                         <a class="btn btn-primary btn-xl sign-message-button" onclick="sign_message()">
-                            Sign a message
+                            Sign your request
                             <i class="fa fa-arrow-right"></i>
                         </a>
                     </div>
