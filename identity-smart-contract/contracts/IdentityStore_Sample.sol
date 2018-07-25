@@ -136,6 +136,12 @@ contract IdentityStore is Ownable {
         return true;
     }
 
+    function getUserTenantId(
+        address _userAddress) view public returns(string) {
+        require(userAddressExists(_userAddress), "There's no account tied to the address");
+        return tenantAddressMapping[_userAddress].tenantId;
+    }
+
     function updateHash(
         bytes32 _oldHash, 
         bytes32 _newHash, 
