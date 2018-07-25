@@ -88,3 +88,7 @@ section h3.small-section-subheading {
 .btn-secondary img {
   margin-right: 8px;
 }
+
+.btn-primary i.fa {
+  margin-left: 6px;
+}
