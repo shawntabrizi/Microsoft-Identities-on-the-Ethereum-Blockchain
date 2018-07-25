@@ -20,6 +20,8 @@ window.onload = async function () {
         }
         */
 
+        load_eth_create_ux();
+
         if (payload['name']) {
             document.getElementById('name').innerText = payload['name']
         }
