@@ -162,6 +162,7 @@ def signup(secret=None):
     txHash = "0x{}".format(hexdecimal)
 
     return message_response(200, {'transactionHash': txHash})
+    # return message_response(200, "success")
 
 
 def message_response(status_code, message):
