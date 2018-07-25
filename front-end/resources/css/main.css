@@ -27,7 +27,6 @@
 .status-message {
   font-size: 1.2rem;
   display: inline-block;
-  margin-bottom: 20px;
 }
 
 .btn-primary {
@@ -81,8 +80,8 @@ section h3.small-section-subheading {
   margin-bottom: 20px !important;
 }
 
-.sign-message-button {
-   margin-top: 20px;
+.action-button {
+   margin-top: 50px;
 }
 
 .btn-secondary img {
