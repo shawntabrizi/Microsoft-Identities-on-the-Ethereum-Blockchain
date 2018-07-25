@@ -54,27 +54,40 @@ function load_eth_create_ux() {
     body.innerHTML = ux;
 }
 
+function load_loading_ux() {
+    var body = document.getElementById("body")
+    var ux =
+        `
+        <section class="top-section">
+            <div class="container">
+                <div class="row text-primary top-section">
+                    <div class="col-lg-12 text-center">
+                        <i class="fa fa-spin fa-spinner fa-5x"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+        `
+    body.innerHTML = ux;
+}
+
 function load_success_ux() {
     var body = document.getElementById("body")
     var ux =
         `
         <section class="top-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center welcome-message">
-                        <div class="row">
-                            <div class="col-lg-12 text-center status-message success-message">
-                                <span class="fa-stack fa-3x status-icon success">
-                                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                    <i class="fa fa-check fa-stack-1x fa-inverse"></i>
-                                </span>
-                                <h2 class="section-subheading success-message">Successully signed the message!</h2>
-                            </div>
-                        </div>
+                <div class="row top-section">
+                    <div class="col-lg-12 text-center status-message success-message">
+                        <span class="fa-stack fa-3x status-icon success">
+                            <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h2 class="section-subheading success-message">Successully signed the message!</h2>
                     </div>
                 </div>
             </div>
-        <section>
+        </section>
         `
     body.innerHTML = ux;
 }
@@ -85,21 +98,23 @@ function load_error_ux() {
         `
         <section class="top-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center welcome-message">
-                        <div class="row">
-                            <div class="col-lg-12 text-center status-message error-message">
-                                <span class="fa-stack fa-3x status-icon error">
-                                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                    <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-                                </span>
-                                <h2 class="section-subheading success-message">Could not sign the message</h2>
-                            </div>
-                        </div>
+                <div class="row top-section">
+                    <div class="col-lg-12 text-center status-message error-message">
+                        <span class="fa-stack fa-3x status-icon error">
+                            <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h2 class="section-subheading success-message">Could not sign the message</h2>
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <a class="btn btn-secondary btn-xl sign-message-button" onclick="location.reload()">
+                            Try again
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
+
         `
     body.innerHTML = ux;
 }
