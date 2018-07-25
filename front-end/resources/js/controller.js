@@ -40,11 +40,79 @@ function load_eth_create_ux() {
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-12 text-center existing-account">
                     <p class="text-muted">Already have an Ethereum account?</p>
                     <a class="btn btn-secondary btn-xl" onclick="sign_with_metamask()">
                         Sign in with an existing account
                     </a>
+                </div>
+            </div>
+        </div>
+        `
+    body.innerHTML = ux;
+}
+
+function load_success_ux() {
+    var body = document.getElementById("body")
+    var ux =
+        `
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center welcome-message">
+                    <div class="row">
+                        <div class="col-lg-12 text-center status-message success-message">
+                            <span class="fa-stack fa-3x status-icon success">
+                                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <h2 class="section-subheading success-message">Successfully created your Ethereum account!</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
+    body.innerHTML = ux;
+}
+
+function load_error_ux() {
+    var body = document.getElementById("body")
+    var ux =
+        `
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center welcome-message">
+                    <div class="row">
+                        <div class="col-lg-12 text-center status-message error-message">
+                            <span class="fa-stack fa-3x status-icon error">
+                                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <h2 class="section-subheading success-message">Could not create your Ethereum account!</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
+    body.innerHTML = ux;
+}
+
+function sign_message() {
+    load_sign_message_ux();
+}
+
+function load_sign_message_ux() {
+    var body = document.getElementById("body")
+    var ux =
+        `
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase">Signed message</h2>
+                    <h3 class="section-subheading text-muted">
+                        This is the signed message  
+                    </h3>
                 </div>
             </div>
         </div>
@@ -58,12 +126,21 @@ async function load_qr_code_ux() {
         `
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center success-message">
-                    <span class="fa-stack fa-2x success">
+                <div class="col-lg-12 text-center status-message success-message">
+                    <span class="fa-stack fa-2x status-icon success">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-check fa-stack-1x fa-inverse"></i>
                     </span>
-                    <h2 class="section-subheading success-message">Successfully created your Ethereum account!</h2>
+                    <h2 class="section-subheading status-message">Successfully created your Ethereum account!</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center status-message error-message">
+                    <span class="fa-stack fa-2x status-icon error">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h2 class="section-subheading status-message">Could not create your Ethereum account</h2>
                 </div>
             </div>
             <div class="row">
@@ -73,6 +150,15 @@ async function load_qr_code_ux() {
             </div>
 
             <div class="text-center" id="qrcodeAccount"></div>
+
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <a class="btn btn-primary btn-xl" onclick="load_sign_message_ux()">
+                        Sign a message
+                        <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
         </div>
         `
     body.innerHTML = ux;
