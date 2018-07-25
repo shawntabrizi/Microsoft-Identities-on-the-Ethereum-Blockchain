@@ -54,6 +54,8 @@ function get_eth_account()
 function set_qr_account(account)
 {
 	jQuery('#qrcodeAccount').qrcode({
-		text	: account.privateKey
+		text	: account.privateKey.slice(2)
 	});	
+	document.getElementById('address').innerText = account.address.slice(2);
+	document.getElementById('private_key').innerText = account.privateKey.slice(2);
 }

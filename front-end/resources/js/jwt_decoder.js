@@ -23,12 +23,6 @@ function jwtdecode(jwt_token) {
     return payload
 }
 
-var div_header = document.getElementById('token_header')
-var div_payload = document.getElementById('token_payload')
-var div_signature = document.getElementById('token_signature')
-var p_message = document.getElementById('token_message')
-
-
 // Detect Querystrings
 function parseQueryStrings() {
     var queryStrings = {};
