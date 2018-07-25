@@ -10,8 +10,9 @@
   margin-top: -2px;
 }
 
-.success {
+.status-icon {
   margin-right: 20px;
+  margin-bottom: 20px
 }
 
 
@@ -19,9 +20,12 @@
   color: #12b886 !important;
 }
 
-.success-message {
+.error .text-primary {
+  color: #ff6b6b !important;
+}
+
+.status-message {
   font-size: 20px;
-  margin-bottom: 60px;
   display: inline;
 }
 
@@ -46,10 +50,13 @@
 }
 
 .welcome-message h3.section-subheading{
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 #qrcodeAccount {
-  margin-top: 20px;
+  margin: 10px 0 50px;
 }
 
+.existing-account {
+  margin-top: 40px;
+}
