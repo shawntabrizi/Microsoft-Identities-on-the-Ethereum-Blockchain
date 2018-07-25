@@ -10,8 +10,9 @@
   margin-top: -2px;
 }
 
-.success {
+.status-icon {
   margin-right: 20px;
+  margin-bottom: 20px
 }
 
 
@@ -19,9 +20,14 @@
   color: #12b886 !important;
 }
 
-.success-message {
-  font-size: 20px;
-  margin-bottom: 60px;
+.error .text-primary {
+  color: #ff6b6b !important;
+}
+
+.status-message {
+  font-size: 1.2rem;
+  display: inline-block;
+  margin-bottom: 30px;
 }
 
 .btn-primary {
@@ -29,13 +35,13 @@
 }
 
 .btn-secondary {
-  background-color: #fff;
+  background-color: rgba(0, 0, 0, 0);
   color: #0facf3 !important;
   border: 2px solid #0facf3;
 }
 
 .btn-secondary:hover, .btn-secondary.active:active, .btn-secondary:not(:disabled):not(.disabled):active{
-  background-color: #fff !important;
+  background-color: rgba(0, 0, 0, 0)!important;
   color: #0facf3 !important;
   border: 2px solid #0facf3;
 }
@@ -44,3 +50,37 @@
   margin-bottom: 60px;
 }
 
+.welcome-message h3.section-subheading{
+  margin-bottom: 40px;
+}
+
+#qrcodeAccount {
+  margin-top: 10px;
+}
+
+#qrcodeAccount canvas {
+  border: 5px solid #0facf3;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+.small-section {
+  padding: 70px 0;
+}
+
+.top-section {
+  padding: 150px 0 70px 0;
+}
+
+.small-section-heading {
+  margin: 10px 0;
+  font-size: 1.5rem;
+}
+
+section h3.small-section-subheading {
+  margin-bottom: 20px !important;
+}
+
+.sign-message-button {
+   margin-top: 20px;
+}

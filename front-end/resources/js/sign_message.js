@@ -21,23 +21,20 @@ async function sign_message(messageJson) {
     return signed_message
 }
 
-async function sign_token() {
-    //var jwt_raw = document.getElementById("jwt_raw").innerText
-    //var signed_message = await sign_message(jwt_raw)
-    //document.getElementById("eth_signature").innerText = signed_message
-    final_output()
+async function sign_with_metamask() {
+    console.log("hi");
+    var accounts = await web3.eth.getAccounts()
+    final_output(accounts)
 }
 
-async function final_output() {
-    var accounts = await web3.eth.getAccounts()
+async function final_output(accounts,) {
     var output = {}
     output.registration = {}
     output.registration.address = accounts[0]
     output.registration.options = {}
     output.registration.options.claims = ["tid"]
-    output.registration.token = document.getElementById("jwt_raw").innerText
+    output.registration.token = window.jwt_token
     output.signature = await sign_message(output.registration)
     
-    document.getElementById("final_output").innerText = JSON.stringify(output)
-
+    send_payload(output)
 }
