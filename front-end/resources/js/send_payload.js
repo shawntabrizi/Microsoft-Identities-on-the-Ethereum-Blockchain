@@ -9,8 +9,8 @@ async function send_payload(payload) {
     },
     body: JSON.stringify(payload)
   })
+
   .then(function(response) {
-    
     return response.json();
   }).then(function(data){
     load_success_ux(data.message.transactionHash);
@@ -18,5 +18,4 @@ async function send_payload(payload) {
     load_error_ux();
   })
 }
-
 
