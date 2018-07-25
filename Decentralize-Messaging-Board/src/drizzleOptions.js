@@ -1,7 +1,7 @@
 import ComplexStorage from './../build/contracts/ComplexStorage.json'
 import SimpleStorage from './../build/contracts/SimpleStorage.json'
 import TutorialToken from './../build/contracts/TutorialToken.json'
-
+import DMB from './../build/contracts/DMB.json'
 const drizzleOptions = {
   web3: {
     block: false,
@@ -11,12 +11,9 @@ const drizzleOptions = {
     }
   },
   contracts: [
-    ComplexStorage,
-    SimpleStorage,
-    TutorialToken
+    DMB
   ],
   events: {
-    SimpleStorage: ['StorageSet']
   },
   polls: {
     accounts: 1500
