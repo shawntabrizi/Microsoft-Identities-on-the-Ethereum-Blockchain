@@ -26,8 +26,13 @@ function load_eth_create_ux() {
     var ux =
         `
         <div class="container">
-            <div class="col-lg-12 row">
-                <h2 class="text-center">Hi <span id="name">there</span>!</h2>
+            <div class="row">
+                <div class="col-lg-12 text-center welcome-message">
+                    <h2 class="section-heading text-uppercase">Hi <span id="name">there</span>!</h2>
+                    <h3 class="section-subheading text-muted">
+                        Let's tie your account to an Ethereum address.  
+                    </h3>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -36,7 +41,7 @@ function load_eth_create_ux() {
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p>Already have an Ethereum account?</p>
+                    <p class="text-muted">Already have an Ethereum account?</p>
                     <a class="btn btn-secondary btn-xl" onclick="sign_with_metamask()">
                         Sign in with an existing account
                     </a>
@@ -58,12 +63,12 @@ async function load_qr_code_ux() {
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-check fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="success-message">Successfully created your Ethereum account!</span>
+                    <h2 class="section-subheading success-message">Successfully created your Ethereum account!</h2>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p>Here's your private key. Take a picture of it and keep it safe.</p>
+                    <p class="text-muted">Here's your private key. Take a picture of it and keep it safe.</p>
                 </div>
             </div>
 
