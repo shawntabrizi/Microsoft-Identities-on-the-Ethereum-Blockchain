@@ -9,10 +9,13 @@ async function send_payload(payload) {
     },
     body: JSON.stringify(payload)
   })
-    .then(function(result) {
-      console.log(result)
-      load_success_ux();
-    }).catch(function() {
-      load_error_ux();
-    })
+
+  .then(function(response) {
+    return response.json();
+  }).then(function(data){
+    load_success_ux(data.message.transactionHash);
+  }).catch(function() {
+    load_error_ux();
+  })
 }
+

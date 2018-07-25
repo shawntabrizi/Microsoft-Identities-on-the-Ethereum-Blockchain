@@ -71,20 +71,27 @@ function load_loading_ux() {
     body.innerHTML = ux;
 }
 
-function load_success_ux() {
+function load_success_ux(transactionHash) {
     var body = document.getElementById("body")
     var ux =
         `
         <section class="top-section">
             <div class="container">
-                <div class="row top-section">
+                <div class="row">
                     <div class="col-lg-12 text-center status-message success-message">
                         <span class="fa-stack fa-3x status-icon success">
                             <i class="fa fa-circle fa-stack-2x text-primary"></i>
                             <i class="fa fa-check fa-stack-1x fa-inverse"></i> 
                         </span>
                         <h2 class="section-subheading success-message">Successully signed the message!</h2>
-                        <!-- <a href="https://ropsten.etherscan.io/tx/">View this transaction on the blockchain</href> -->
+                        <div>
+                            <a target="blank" href="https://ropsten.etherscan.io/tx/` + transactionHash + `">View this transaction on the blockchain</a>
+                        </div>
+                        <div>
+                            <a class="btn btn-secondary btn-xl action-button" onclick="start_over()">
+                                Start over
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,7 +106,7 @@ function load_error_ux() {
         `
         <section class="top-section">
             <div class="container">
-                <div class="row top-section">
+                <div class="row">
                     <div class="col-lg-12 text-center status-message error-message">
                         <span class="fa-stack fa-3x status-icon error">
                             <i class="fa fa-circle fa-stack-2x text-primary"></i>
@@ -108,7 +115,7 @@ function load_error_ux() {
                         <h2 class="section-subheading success-message">Could not sign the message</h2>
                     </div>
                     <div class="col-lg-12 text-center">
-                        <a class="btn btn-secondary btn-xl sign-message-button" onclick="location.reload()">
+                        <a class="btn btn-secondary btn-xl action-button" onclick="location.reload()">
                             Try again
                         </a>
                     </div>
