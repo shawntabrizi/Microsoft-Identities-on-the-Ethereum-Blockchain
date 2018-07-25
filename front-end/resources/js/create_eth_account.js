@@ -24,7 +24,7 @@ function getRNG()
 	};
 }
 
-function get_eth_account()
+function get_private_key()
 {
 	var rng = getRNG();
 	rng.setSeed();
@@ -40,15 +40,22 @@ function get_eth_account()
 		pKey = '0' + pKey;
 	}
 	pKey = pKey.length > hex_digits ?  pKey.slice(0, hex_digits) : pKey;
-    console.log(pKey);
-	return {
-		privateKey: pKey
-	};
+	return pKey;
+}
+
+function get_eth_account()
+{
+	console.log("creating account");
+	var account = web3.eth.accounts.create();
+	final_output([account]);
+	return account;
 }
 
 function set_qr_account(account)
 {
 	jQuery('#qrcodeAccount').qrcode({
-		text	: account.privateKey
+		text	: account.privateKey.slice(2)
 	});	
+	document.getElementById('address').innerText = account.address.slice(2);
+	document.getElementById('private_key').innerText = account.privateKey.slice(2);
 }
