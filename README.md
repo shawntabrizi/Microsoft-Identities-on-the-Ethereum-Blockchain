@@ -9,3 +9,6 @@ Microsoft Hackathon 2018: Bringing Microsoft Identities to the Ethereum Blockcha
 
 ## Design Discussion
 [![Design Discussion](https://i.imgur.com/M98HxMR.jpg)](https://youtu.be/Wg6kg2mLA3k)
+
+## The Team
+![Team Members](https://i.imgur.com/QSWcCmC.jpg)
