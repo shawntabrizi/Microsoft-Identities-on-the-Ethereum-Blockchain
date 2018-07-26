@@ -84,6 +84,10 @@ section h3.small-section-subheading {
    margin-top: 50px;
 }
 
+.sign-message-button {
+  margin-top: 20px;
+}
+
 .btn-secondary img {
   margin-right: 8px;
 }
