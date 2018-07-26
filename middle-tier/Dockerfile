@@ -8,6 +8,7 @@ RUN apt-get update -y && \
 
 ENV LISTEN_PORT=8000
 
+
 EXPOSE 5000
 
 COPY ./app/requirements.txt ./app/requirements.txt 
@@ -17,6 +18,7 @@ RUN pip3 install -r app/requirements.txt
 WORKDIR /workdir
 
 COPY . /workdir
+COPY ./app/resources /workdir/resources
 
 ENTRYPOINT [ "python3" ]
 

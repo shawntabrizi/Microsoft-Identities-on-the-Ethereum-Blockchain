@@ -7,20 +7,27 @@ import jwt
 import cryptography
 import hashlib
 import sha3
+import json
 
-from deploy_contract import deploy
+import interact_contract
 
 from web3.auto import w3
 from eth_account.messages import defunct_hash_message
 
 from requests.auth import HTTPBasicAuth
 from flask import Flask, json, jsonify, request
+from flask_cors import CORS, cross_origin
 from flask_restful import Resource, Api
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
+from deploy_contract import create_contract
+
 app = Flask(__name__)
 api = Api(app)
+
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
@@ -41,41 +48,38 @@ jwk_keys = res.json()
 publicKeyMap = {}
 
 @app.route("/", methods=['GET'])
+@cross_origin()
 def index():
-    return "Welcome to MSFT identities on the Ethereum Blockchain"
+    return message_response(200, "Welcome to MSFT identities on the Ethereum Blockchain")
 
 @app.route("/deploy", methods=['POST'])
 def deploy_contract():
-    contract_definition = json.loads(request.data)
-    contract_address = '0x313CaC645b2210b6591EEDd7a6D492521819CF1E'
-    contract = deploy(contract_definition, contract_address)
+    contract = create_contract(contract_definition, contract_address)
     print('contract:{0}'.format(contract))
     return app.make_response(jsonify(contract))
     
 
-@app.before_request
-def before_request():
-    
-    print ("before processing: url is: {0}".format(request.url), file=sys.stderr)
-    if not request.data:
-        resp = app.make_response(jsonify(authErrorNoBody))
-        resp.status = "401"
-        resp.content_type = "application/json"
-        return resp
+@app.route("/check/<tenantid>/<useraddress>", methods=['GET'])
+@cross_origin()
+def check(tenantid, useraddress):
+    ret_val = interact_contract.is_valid(tenantid, useraddress)
+    return message_response(200, ret_val)
 
-    try:
-        json_string = json.loads(request.data)
-    except ValueError:
-        resp = app.make_response(jsonify(invalidJsonInBody))
-        resp.status = "401"
-        resp.content_type = "application/json"
-        return resp
 
 
 @app.route("/signup", methods=['POST'])
 @app.route("/signup/<secret>", methods=['POST']) # for testing to skip certain step, look below
-def validate(secret=None):
-    # already validated above
+@cross_origin()
+def signup(secret=None):    
+    print ("before processing: url is: {0}".format(request.url), file=sys.stderr)
+    if not request.data:
+        return message_response(401, authErrorNoBody)
+
+    try:
+        json_string = json.loads(request.data)
+    except ValueError:
+        return message_response(401, invalidJsonInBody)
+        
     print("Validating")
     json_string = json.loads(request.data)
     registrationReq = json_string["registration"]
@@ -85,34 +89,21 @@ def validate(secret=None):
     signature = json_string["signature"]
     
     if not signature:
-        resp = app.make_response(jsonify(missingSignature))
         print("could not find signature from payload.")
-        resp.status = "400"
-        resp.content_type = "application/json"
-        return resp
+        return message_response(400, missingSignature)
 
     verified_address = verify_address(registrationReq, signature)
     if verified_address != address:
-        resp = app.make_response(jsonify(mismatchAddressSignature))
-        print("signature doesn't match address.")
-        resp.status = "400"
-        resp.content_type = "application/json"
-        return resp
+        return message_response(400, mismatchAddressSignature)
     
     if not registrationReq or not registrationReq["token"]:
-        resp = app.make_response(jsonify(invalidJsonInBody))
-        resp.status = "401"
-        resp.content_type = "application/json"
-        return resp
+        return message_response(401, invalidJsonInBody)
 
     access_token = registrationReq["token"]
     print(access_token)
     
     if not access_token:
-        resp = app.make_response(jsonify(authErrorNoToken))
-        resp.status = "401"
-        resp.content_type = "application/json"
-        return resp
+        return message_response(401, authErrorNoToken)
 
     token_header = jwt.get_unverified_header(access_token)
     x5c = None
@@ -142,25 +133,16 @@ def validate(secret=None):
             audience="79d908c3-6cc1-40c6-bbf1-9f7140e927fb")
     except jwt.exceptions.ExpiredSignatureError:
         print("expired signature")
-        resp = app.make_response(jsonify(authErrorExpiredToken))
-        resp.status = "401"
-        resp.content_type = "application/json"
-        return resp
+        return message_response(401, authErrorExpiredToken)
     except:
-        resp = app.make_response(jsonify(authErrorBadToken))
         print("bad token")
-        resp.status = "401"
-        resp.content_type = "application/json"
-        return resp
+        return message_response(401, authErrorBadToken)
 
     claimSet = registrationReq["options"]["claims"]
     # ignore the claimSet for now until we support more claim types
     if not claimSet or len(claimSet) != 1 or claimSet[0] != "tid":
-        resp = app.make_response(jsonify(authErrorClaimNotSupport))
         print("claims in the claims to extract list are not supported")
-        resp.status = "400"
-        resp.content_type = "application/json"
-        return resp
+        return message_response(400, authErrorClaimNotSupport)
     
     tenantId = decoded_token["tid"]
     userObjectId = decoded_token["oid"]
@@ -174,10 +156,21 @@ def validate(secret=None):
     userHash = sha3.sha3_256((tenantId + "_" + userObjectId).encode('utf-8')).hexdigest()
     print("hash: " + userHash)
 
-    # setTenant(contract, )
+    txn = interact_contract.setTenant(userHash, address, issuedAtTicks, tenantId)
+    
+    hexdecimal = "".join(["{:02X}".format(b) for b in txn['hash']])
+    txHash = "0x{}".format(hexdecimal)
 
-    resp = app.make_response("success")
-    resp.status = "200"
+    return message_response(200, {'transactionHash': txHash})
+    # return message_response(200, "success")
+
+
+def message_response(status_code, message):
+    resp = app.make_response(json.jsonify({
+        "message" : message
+    }))
+    resp.status = str(status_code)
+    resp.content_type = "application/json"
     return resp
 
 
@@ -194,7 +187,7 @@ def verify_address(registrationReq, signature):
 class Metadata(Resource):
     
     def get(self):
-        resp = app.make_response(jsonify(sampleResponse))
+        resp = app.make_response(jsonify(''))
         resp.headers['Access-Control-Allow-Origin'] = '*'
         return resp
 
