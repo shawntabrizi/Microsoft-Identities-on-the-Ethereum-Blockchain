@@ -40,11 +40,11 @@ function load_eth_create_ux() {
                     <div class="col-lg-12 text-center welcome-message">
                         <h2 class="section-heading text-uppercase">Hi <span id="name">there</span>!</h2>
                         <h3 class="section-subheading text-muted">
-                            Let's tie your Microsoft account to an Ethereum address.  
+                            Let's tie your organizational account to an Ethereum address.  
                         </h3>
                     </div>
                     <div class="col-lg-12 text-center">
-                        <a class="btn btn-primary btn-xl" onclick="load_qr_code_ux()">Create your Ethereum account</a>
+                        <a class="btn btn-primary btn-xl" onclick="load_qr_code_ux()">Create an Ethereum account</a>
                     </div>
                 </div>
             </div>
@@ -92,9 +92,9 @@ function load_success_ux(transactionHash) {
                             <i class="fa fa-circle fa-stack-2x text-primary"></i>
                             <i class="fa fa-check fa-stack-1x fa-inverse"></i> 
                         </span>
-                        <h2 class="section-subheading success-message">Successully signed the message!</h2>
+                        <h2 class="section-subheading success-message">Successully saved your organization!</h2>
                         <div>
-                            <a target="blank" href="https://ropsten.etherscan.io/tx/` + transactionHash + `">View this transaction on the blockchain</a>
+                            <a target="blank" href="https://ropsten.etherscan.io/tx/` + transactionHash + `">View this transaction on the blockchain.</a>
                         </div>
                         <div>
                             <a class="btn btn-secondary btn-xl action-button" onclick="start_over()">
@@ -144,7 +144,7 @@ async function load_qr_code_ux() {
             <div class="container">
                 <div class="row">
                     <div class="col-7 text-center small-section account">
-                        <h2 class="section-subheading status-message">We've generated an Ethereum account for you:</h2>
+                        <h2 class="section-subheading status-message">We've generated an Ethereum account for you!</h2>
                         <h2 class="small-section-heading">Here's your private key <i class="fa fa-arrow-right"></i></h2>
                         <h3 class="section-subheading small-section-subheading text-muted">Take a photo of it and keep it safe.</h3>
                         <div class="account-details bg-light">
@@ -162,9 +162,9 @@ async function load_qr_code_ux() {
             <div class="container>
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <h2 class="small-section-heading">Now let's add your company to the blockchain</h2>
+                        <h2 class="small-section-heading">Now let's add your organizational identity to the blockchain.</h2>
                         <a class="btn btn-primary btn-xl sign-message-button" onclick="sign_message()">
-                            Sign your request
+                            Submit your details
                             <i class="fa fa-arrow-right"></i>
                         </a>
                     </div>
