@@ -19,6 +19,7 @@ contract DMB is ERC721Token ("DecentralizeMessagingBoard", "DMB") {
     mapping (address => string) addrTenantId;
     mapping (string => string) tenantIdAffiliation;
     address  identityContract = 0x2F573d44cdE240d3938f0304509f97528aCcace5;
+    //address identityContract = 0xEFb78C21748DB2Cd40ba783ffD1a78402175E806;
     IdentityStore idstore;
     modifier isValid (string _tenantId) {
         require(idstore.isValid(msg.sender, 0)); //calling isValid  functino from Authenticator app
@@ -41,7 +42,7 @@ contract DMB is ERC721Token ("DecentralizeMessagingBoard", "DMB") {
         uint256 newTokenId = erc721TokenId++;
         super._mint(msg.sender, newTokenId);
         super._setTokenURI(newTokenId, _uri);
-        //uint256 tenantId = addrTenantId[msg.sender]; //get it from the IdentityContract
+        //string tenantId = addrTenantId[msg.sender]; //get it from the IdentityContract
         //require(tenantId > 0);
         postIdTenantIdMap[newTokenId] = _tenantId;        
     }
@@ -50,7 +51,7 @@ contract DMB is ERC721Token ("DecentralizeMessagingBoard", "DMB") {
     //and the tenantId affiliation
     function setTenantId(string _tenantId, string affiliation) public{
         addrTenantId[msg.sender] = _tenantId;
-        //idstore.setTenant(keccak256(_tenantId), msg.sender, 0, _tenantId);
+        //idstore.setTenant(keccak256(_tenantId), msg.sender, block.timestamp, _tenantId);
         tenantIdAffiliation[_tenantId] = affiliation;
     }
 
@@ -61,7 +62,13 @@ contract DMB is ERC721Token ("DecentralizeMessagingBoard", "DMB") {
     function getPostAuthorAffiliation(uint256 tokenId) public view returns(string){
         return tenantIdAffiliation[getTokenTenantId(tokenId)];
     }
+
+    function login() public view returns(bool){
+        return idstore.isValid(msg.sender, 0);
+    }
 }
+
+
 /**
  * @title Ownable
  * @dev The Ownable contract has an owner address, and provides basic authorization control
