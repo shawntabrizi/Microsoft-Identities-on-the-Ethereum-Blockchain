@@ -126,8 +126,7 @@ class Home extends Component {
         <div className="pure-g">
           <div className="pure-u-1-1 header">
             <img src={logo} alt="drizzle-logo" />
-            <h1>Drizzle Examples</h1>
-            <p>Examples of how to get started with Drizzle in various situations.</p>
+            <h1>Decentralize Messaging Board</h1>
 
             <br/><br/>
           </div>
@@ -138,10 +137,10 @@ class Home extends Component {
             <br/><br/>
           </div>
           <div className="pure-u-1-1">
-            <p>Register a new tenantId</p>
-            <h2>Decentralize Messaging Board Registration</h2>
-            <p>Hack way to create tenantId</p>
-            <ContractForm contract="DMB" method="setTenantId" />
+            <p>Set a affiliation</p>
+            <h2>Decentralize Messaging Board Profile Setting</h2>
+            <p>Which company you're working for ?</p>
+            <ContractForm contract="DMB" method="setAffiliation" />
             <br/><br/>
           </div>
 

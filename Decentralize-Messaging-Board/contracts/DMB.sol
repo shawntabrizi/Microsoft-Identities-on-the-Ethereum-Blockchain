@@ -18,10 +18,11 @@ contract DMB is ERC721Token ("DecentralizeMessagingBoard", "DMB") {
     //hack mapping for address to tenantId
     mapping (address => string) addrTenantId;
     mapping (string => string) tenantIdAffiliation;
-    address  identityContract = 0x2F573d44cdE240d3938f0304509f97528aCcace5;
+    //address  identityContract = 0x2F573d44cdE240d3938f0304509f97528aCcace5;
     //address identityContract = 0xEFb78C21748DB2Cd40ba783ffD1a78402175E806;
+    address  identityContract = 0x0a8fb9074e29481f5A40d4f56f19E8499d889EF5;
     IdentityStore idstore;
-    modifier isValid (string _tenantId) {
+    modifier isValid () {
         require(idstore.isValid(msg.sender, 0)); //calling isValid  functino from Authenticator app
         _;
     }
@@ -36,23 +37,22 @@ contract DMB is ERC721Token ("DecentralizeMessagingBoard", "DMB") {
     // _uri  : The string for the content of the post
     // names  : The names of the signers (is ';' delimetered string)
     // tenantId : The tenantId you want to post as..
-    function createNewPost(string _tenantId, string _uri) isValid(_tenantId) public {
+    function createNewPost(string post_body) isValid public {
         //New generated token Id
         //require(idstore.isValid(_tenantId, msg.sender, 0)); //check tenantId as well
         uint256 newTokenId = erc721TokenId++;
         super._mint(msg.sender, newTokenId);
-        super._setTokenURI(newTokenId, _uri);
-        //string tenantId = addrTenantId[msg.sender]; //get it from the IdentityContract
+        super._setTokenURI(newTokenId, post_body);
         //require(tenantId > 0);
-        postIdTenantIdMap[newTokenId] = _tenantId;        
+        postIdTenantIdMap[newTokenId] = idstore.getUserTenantId(msg.sender);        
     }
 
     //hack function to set the tenantId you want for the post
     //and the tenantId affiliation
-    function setTenantId(string _tenantId, string affiliation) public{
-        addrTenantId[msg.sender] = _tenantId;
+    function setAffiliation(string affiliation) public{
+        //addrTenantId[msg.sender] = _tenantId;
         //idstore.setTenant(keccak256(_tenantId), msg.sender, block.timestamp, _tenantId);
-        tenantIdAffiliation[_tenantId] = affiliation;
+        tenantIdAffiliation[idstore.getUserTenantId(msg.sender)] = affiliation;
     }
 
     function getTokenTenantId(uint256 tokenId) public view returns(string){
@@ -131,7 +131,6 @@ contract Ownable {
   }
 }
 
-
 contract IdentityStore is Ownable {
   
     struct User {
@@ -180,7 +179,7 @@ contract IdentityStore is Ownable {
         }
     }
 
-    function isValid(
+    function isValidTenant(
         string _tenantId, 
         address _userAddress,
         uint256 _minTimestamp) view public returns(bool) {
@@ -220,6 +219,12 @@ contract IdentityStore is Ownable {
         }
 
         return true;
+    }
+    
+    function getUserTenantId(
+        address _userAddress) view public returns(string) {
+        require(userAddressExists(_userAddress), "There's no account tied to the address");
+        return tenantAddressMapping[_userAddress].tenantId;
     }
 
     function updateHash(
