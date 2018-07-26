@@ -27,7 +27,6 @@
 .status-message {
   font-size: 1.2rem;
   display: inline-block;
-  margin-bottom: 30px;
 }
 
 .btn-primary {
@@ -81,6 +80,45 @@ section h3.small-section-subheading {
   margin-bottom: 20px !important;
 }
 
+.action-button {
+   margin-top: 50px;
+}
+
 .sign-message-button {
-   margin-top: 20px;
+  margin-top: 20px;
+}
+
+.btn-secondary img {
+  margin-right: 8px;
+}
+
+.btn-primary i.fa, .account .small-section-heading i {
+  margin-left: 6px;
+}
+
+.account-details {
+  font-family: monospace;
+  margin-top: 30px;
+  border-radius: 9px;
+  padding: 10px 15px;
+}
+
+.account-details div {
+  display: inline-block;
+}
+
+.account .small-section-heading {
+  display: inline-block;
+}
+
+.steps, .getting-started .section-heading {
+  margin-top: 20px;
+}
+
+.steps li {
+  padding: 10px 20px;
+}
+
+#team .section-heading {
+  margin-bottom: 30px;
 }

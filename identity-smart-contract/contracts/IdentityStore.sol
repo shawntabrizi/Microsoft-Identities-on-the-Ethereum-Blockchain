@@ -1,6 +1,5 @@
 pragma solidity ^0.4.24;
 
-
 /**
  * @title Ownable
  * @dev The Ownable contract has an owner address, and provides basic authorization control
@@ -111,7 +110,7 @@ contract IdentityStore is Ownable {
         }
     }
 
-    function isValid(
+    function isValidTenant(
         string _tenantId, 
         address _userAddress,
         uint256 _minTimestamp) view public returns(bool) {
@@ -134,6 +133,29 @@ contract IdentityStore is Ownable {
         }
 
         return true;
+    }
+
+    function isValid(address _userAddress, uint256 _minTimestamp) view public returns(bool) {
+
+        // check valid address
+        if(!userAddressExists(_userAddress)) {
+            return false;
+        }
+
+        User memory currentUser = tenantAddressMapping[_userAddress];
+
+        // check minimum timestamp
+        if(currentUser.timestamp < _minTimestamp) {
+            return false;
+        }
+
+        return true;
+    }
+    
+    function getUserTenantId(
+        address _userAddress) view public returns(string) {
+        require(userAddressExists(_userAddress), "There's no account tied to the address");
+        return tenantAddressMapping[_userAddress].tenantId;
     }
 
     function updateHash(
