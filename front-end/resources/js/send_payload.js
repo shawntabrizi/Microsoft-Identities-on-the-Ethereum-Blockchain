@@ -1,4 +1,4 @@
-var endpoint = "https://msidoneth.azurewebsites.net/signup"
+var endpoint = "https://middletier.azurewebsites.net/signup"
 
 async function send_payload(payload) {
   fetch(endpoint, {
